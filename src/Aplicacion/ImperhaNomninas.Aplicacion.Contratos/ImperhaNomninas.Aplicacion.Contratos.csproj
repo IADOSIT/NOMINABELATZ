@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    ===================================
+    IMPERHA NÓMINAS - Contratos de Aplicación
+    DTOs, Interfaces y Contratos
+    ===================================
+  -->
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>ImperhaNomninas.Aplicacion.Contratos</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Dominio\ImperhaNomninas.Dominio.Compartido\ImperhaNomninas.Dominio.Compartido.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,156 @@
+/* ===================================
+   IMPERHA NÓMINAS - Sistema Enterprise
+   Estilos globales
+   =================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f5f5f5;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Scrollbar personalizado */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Utilidades */
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.slide-in-right {
+  animation: slideInRight 0.3s ease-out;
+}
+
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+/* Estilos para impresión */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  body {
+    background-color: white;
+  }
+}
+
+/* Estilos para tablas de nómina */
+.nomina-table {
+  font-size: 12px;
+}
+
+.nomina-table th {
+  background-color: #1976d2;
+  color: white;
+  font-weight: 600;
+}
+
+.nomina-table .total-row {
+  background-color: #e3f2fd;
+  font-weight: 600;
+}
+
+/* Formato de moneda */
+.currency {
+  font-family: 'Roboto Mono', monospace;
+  text-align: right;
+}
+
+/* Estado de zafra */
+.zafra-badge {
+  background: linear-gradient(45deg, #ff9800, #f44336);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Badges de estado */
+.estado-activo {
+  background-color: #4caf50;
+  color: white;
+}
+
+.estado-baja {
+  background-color: #f44336;
+  color: white;
+}
+
+.estado-incapacidad {
+  background-color: #ff9800;
+  color: white;
+}
+
+.estado-vacaciones {
+  background-color: #2196f3;
+  color: white;
+}

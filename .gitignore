@@ -1,0 +1,26 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+*.dll
+*.pdb
+*.exe
+*.cache
+*.runtimeconfig.json
+*.deps.json
+logs/
+*.log
+runtimes/
+
+# Node / frontend
+node_modules/
+dist/
+.env
+.env.local
+*.local
+
+# OS
+.DS_Store
+Thumbs.db

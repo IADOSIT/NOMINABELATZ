@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(sqlcmd:*)",
+      "Bash(dotnet restore:*)",
+      "Bash(dotnet build:*)",
+      "Bash(npm install)",
+      "Bash(npx vite)",
+      "Bash(taskkill:*)",
+      "Bash(cmd //c \"taskkill /PID 9236 /F\")",
+      "Bash(curl:*)",
+      "Bash(cmd //c \"netsh advfirewall firewall show rule name=all\")",
+      "Bash(cmd //c \"netsh advfirewall firewall add rule name=\"\"Vite Dev Server\"\" dir=in action=allow protocol=tcp localport=5173\")"
+    ]
+  }
+}

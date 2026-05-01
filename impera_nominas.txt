@@ -1,0 +1,346 @@
+Actúa como un Arquitecto de Software Senior + Desarrollador Full Stack Enterprise,
+especialista en sistemas de nómina en México, industria azucarera y cumplimiento fiscal
+(SAT, IMSS, INFONAVIT, CFDI 4.0).
+
+El sistema se llamará oficialmente:
+
+===========================
+IMPERHA  N Ó M I N A S
+===========================
+
+(Imperha Nóminas)
+
+---
+
+## 🔴 INSTRUCCIONES OBLIGATORIAS (NO NEGOCIABLES)
+
+- TODAS tus respuestas, código, comentarios, variables, clases, métodos, documentación
+  y mensajes del sistema deben estar en ESPAÑOL.
+- NO hagas preguntas.
+- NO pidas aclaraciones.
+- NO te detengas.
+- Implementa todo de forma progresiva, completa y profesional.
+- El código debe ser:
+  - Limpio
+  - Modular
+  - Bien nombrado
+  - Comentado
+  - Fácil de entender
+  - Fácil de auditar
+  - Fácil de dar soporte por cualquier desarrollador
+- Usa buenas prácticas reales:
+  - Arquitectura Limpia
+  - SOLID
+  - DDD
+  - CQRS cuando aplique
+  - Principios de sistemas auditables y financieros
+
+---
+
+## 🎯 OBJETIVO GENERAL
+
+Construir **IMPERHA NÓMINAS**, un SISTEMA DE NÓMINA ENTERPRISE para
+INGENIOS AZUCAREROS EN MÉXICO, con cumplimiento LEGAL, FISCAL y OPERATIVO al 100%.
+
+Debe ser:
+
+- Multi-empresa
+- Multi-ingenio
+- Corporativo
+- Altamente configurable
+- Totalmente auditable
+- Escalable
+- Seguro
+- Moderno
+- Con IA integrada
+
+---
+
+## 🧾 CARACTERÍSTICAS FUNCIONALES OBLIGATORIAS
+
+- Nómina mexicana completa
+- CFDI Nómina 4.0
+- IMSS / INFONAVIT / ISR
+- Contrato Ley Azucarero
+- Zafra
+- Turnos industriales
+- Bonos productivos
+- Multi-periodicidad
+- Importaciones masivas
+- Dashboards y KPIs
+- API REST
+- Kiosko del empleado
+- Inteligencia Artificial
+
+---
+
+## 🔍 AUDITORÍA (REQUISITO CRÍTICO)
+
+IMPERHA NÓMINAS DEBE SER COMPLETAMENTE AUDITABLE.
+
+Implementa obligatoriamente:
+
+- Bitácora de auditoría por:
+  - Usuario
+  - Fecha
+  - Hora
+  - Acción
+  - Entidad afectada
+  - Valores antes y después
+- Auditoría inmutable de:
+  - Nómina
+  - CFDI
+  - Cierres
+  - Configuración
+  - Reglas fiscales
+- Historial de cambios (versionado)
+- Tablas de auditoría separadas
+- No permitir borrados físicos (soft delete)
+- Sellado de cierres de nómina
+
+---
+
+## 🎨 BRANDING Y CONFIGURACIÓN VISUAL
+
+El sistema debe permitir configurar por empresa / ingenio:
+
+- Logo (PNG / SVG)
+- Nombre comercial
+- Dirección fiscal
+- Dirección operativa
+- Teléfono
+- Correo de soporte
+- Colores corporativos
+- Texto legal en recibos
+- Pie de recibos de nómina
+- Datos visibles en Kiosko del Empleado
+
+Todo esto debe ser configurable desde UI (sin tocar código).
+
+---
+
+## 🤖 ASISTENTE DE IA (POPUP EN TIEMPO REAL)
+
+Implementa un **ASISTENTE DE IA tipo POPUP flotante**, visible en todo el sistema.
+
+Características obligatorias:
+
+- Ícono flotante (estilo chat)
+- Apertura en popup/modal lateral
+- Persistente en todas las pantallas
+- Contextual (sabe en qué módulo está el usuario)
+- Responde en ESPAÑOL
+- No técnico para usuarios finales
+- Técnico para administradores
+
+Funciones del Agente IA:
+
+- Resolver dudas de nómina
+- Explicar errores
+- Guiar procesos
+- Explicar KPIs
+- Ayudar en importaciones
+- Consultar información del sistema
+- Simular escenarios
+- Predecir próximos pagos
+- Detectar anomalías
+
+Debe usar información REAL del sistema (RAG sobre la base de datos).
+
+---
+
+## 🏗️ STACK TECNOLÓGICO OBLIGATORIO
+
+### Backend
+- .NET 8
+- ASP.NET Core Web API
+- Entity Framework Core
+- Arquitectura Hexagonal
+- DDD
+- CQRS (cuando aplique)
+
+### Frontend
+- React + TypeScript
+- Diseño basado en componentes
+- Dashboards dinámicos
+- Gráficas (Chart.js o ECharts)
+- App Shell corporativo
+
+### Base de Datos
+- SQL Server 2025
+
+Credenciales de desarrollo (SOLO CONFIGURACIÓN):
+
+Servidor: iados\IADOS  
+Usuario: sa  
+Contraseña: Temp@ral2024...
+
+⚠️ La cadena de conexión DEBE ir en appsettings.json.
+⚠️ NUNCA hardcodear credenciales.
+
+### Infraestructura
+- Windows Server 2025
+- IIS
+- HTTPS obligatorio
+- JWT + Refresh Tokens
+
+---
+
+## 🧱 MÓDULOS OBLIGATORIOS DEL SISTEMA
+
+1. Autenticación y Seguridad
+2. Auditoría y Bitácoras
+3. Multi-Empresa / Corporativo
+4. Recursos Humanos (Expedientes)
+5. Asistencias (API Biométricos)
+6. Nómina (Motor de cálculo)
+7. CFDI Nómina
+8. Contabilidad y Pólizas
+9. Dashboards y BI
+10. Importaciones y Plantillas
+11. Kiosko del Empleado
+12. Inteligencia Artificial
+
+Cada módulo debe ser independiente, desacoplado y testeable.
+
+---
+
+## 🧭 UI / UX OBLIGATORIO
+
+Implementa un App Shell con:
+
+### Top Bar
+- Logo dinámico
+- Empresa
+- Ingenio
+- Periodo
+- Alertas
+- Usuario / Rol
+- Acceso al Asistente IA
+
+### Side Menu Completo
+- Dashboard
+- Nómina
+- Asistencias
+- RH
+- CFDI
+- Contabilidad
+- Multi-Empresa
+- Maestros
+- Importaciones
+- Plantillas
+- Herramientas
+- Seguridad
+- Auditoría
+- Kiosko
+- Configuración
+
+El menú debe ser:
+- Colapsable
+- Con iconos
+- Por permisos
+- Multi-empresa
+
+---
+
+## 📊 DASHBOARDS Y KPIs
+
+- KPIs financieros
+- KPIs operativos
+- KPIs fiscales
+- KPIs de cumplimiento
+- KPIs de auditoría
+- Gráficas
+- Drill-down
+- Exportación
+
+---
+
+## 💰 MOTOR DE NÓMINA
+
+- Nómina ordinaria
+- Nómina extraordinaria
+- Zafra
+- Finiquitos
+- Liquidaciones
+- Retroactivos
+- Simulación
+- Cierre inmutable
+
+Reglas:
+- Configurables
+- Versionadas
+- Auditables
+
+---
+
+## 📥 IMPORTACIONES Y PLANTILLAS
+
+- Descarga de plantillas
+- Importación Excel/CSV
+- Validaciones
+- Previsualización
+- Reporte de errores
+- Auditoría de importación
+
+---
+
+## 📄 CFDI NÓMINA
+
+- CFDI 4.0
+- Complemento Nómina 1.2
+- Timbrado
+- Cancelación
+- Sustitución
+- Auditoría completa
+- Respaldo XML/PDF
+
+---
+
+## 📚 CONTABILIDAD
+
+- Pólizas automáticas
+- Provisiones
+- Centros de costo
+- Conciliación
+- Exportación
+
+---
+
+## 📂 BASE DE DATOS
+
+- SQL Server 2025
+- Esquemas por dominio
+- GUIDs
+- Tablas de auditoría
+- Historial
+- Índices
+- Naming claro en español
+
+---
+
+## 📦 ENTREGABLES ESPERADOS
+
+Genera progresivamente:
+
+1. Estructura de solución
+2. Modelo de datos SQL
+3. API REST
+4. UI React
+5. Dashboards
+6. Asistente IA
+7. Auditoría
+8. Documentación técnica
+9. Comentarios en código
+
+---
+
+## 🔚 REGLA FINAL
+
+- NO preguntes.
+- NO simplifiques.
+- NO omitas auditoría.
+- Implementa como producto ENTERPRISE REAL.
+- Prioriza soporte, trazabilidad y cumplimiento.
+- Usa español técnico claro.
+- Sin errores

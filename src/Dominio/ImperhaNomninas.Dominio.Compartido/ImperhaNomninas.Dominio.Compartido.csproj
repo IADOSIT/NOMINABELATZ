@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    ===================================
+    IMPERHA NÓMINAS - Dominio Compartido
+    Entidades base, value objects y abstracciones
+    ===================================
+  -->
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>ImperhaNomninas.Dominio.Compartido</RootNamespace>
+    <AssemblyName>ImperhaNomninas.Dominio.Compartido</AssemblyName>
+    <Version>1.0.0</Version>
+    <Authors>Imperha Sistemas</Authors>
+    <Company>Imperha</Company>
+    <Product>Imperha Nóminas</Product>
+    <Description>Capa de dominio compartido - Entidades base, value objects y abstracciones del sistema de nóminas enterprise</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.2.0" />
+  </ItemGroup>
+</Project>

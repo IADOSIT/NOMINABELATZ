@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="IMPERHA NÓMINAS - Sistema de Nómina Enterprise para Ingenios Azucareros" />
+    <meta name="theme-color" content="#1a472a" />
+
+    <!-- Fuentes de Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+    <title>IMPERHA NÓMINAS - Sistema Enterprise</title>
+
+    <style>
+      /* Loader inicial mientras carga React */
+      .initial-loader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #1a472a 0%, #2d5a3d 100%);
+        z-index: 9999;
+      }
+
+      .initial-loader .logo {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #d4af37;
+        margin-bottom: 2rem;
+        font-family: 'Inter', sans-serif;
+      }
+
+      .initial-loader .spinner {
+        width: 50px;
+        height: 50px;
+        border: 3px solid rgba(212, 175, 55, 0.3);
+        border-top-color: #d4af37;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+
+      .initial-loader .text {
+        margin-top: 1.5rem;
+        color: rgba(255, 255, 255, 0.8);
+        font-family: 'Inter', sans-serif;
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <!-- Loader inicial - se elimina cuando React monta -->
+      <div class="initial-loader">
+        <div class="logo">IMPERHA NÓMINAS</div>
+        <div class="spinner"></div>
+        <div class="text">Cargando sistema...</div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

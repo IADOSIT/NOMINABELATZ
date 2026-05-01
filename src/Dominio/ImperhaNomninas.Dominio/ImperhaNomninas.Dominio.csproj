@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    ===================================
+    IMPERHA NÓMINAS - Dominio Principal
+    Entidades, agregados y lógica de negocio
+    ===================================
+  -->
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>ImperhaNomninas.Dominio</RootNamespace>
+    <AssemblyName>ImperhaNomninas.Dominio</AssemblyName>
+    <Version>1.0.0</Version>
+    <Authors>Imperha Sistemas</Authors>
+    <Company>Imperha</Company>
+    <Product>Imperha Nóminas</Product>
+    <Description>Capa de dominio principal - Entidades, agregados y lógica de negocio del sistema de nóminas enterprise</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ImperhaNomninas.Dominio.Compartido\ImperhaNomninas.Dominio.Compartido.csproj" />
+  </ItemGroup>
+</Project>
