@@ -4,6 +4,5 @@ dist
 .gitignore
 *.md
 Dockerfile
-nginx.conf
 .dockerignore
 .DS_Store
