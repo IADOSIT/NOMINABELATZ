@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: nominabelatz-frontend
+    ports:
+      - "8080:80"
+    restart: always
+    environment:
+      - VITE_API_URL=https://api.nominabelatz.com # Change this for production
+    networks:
+      - web_network
+
+networks:
+  web_network:
+    external: true
