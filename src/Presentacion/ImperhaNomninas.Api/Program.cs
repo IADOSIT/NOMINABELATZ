@@ -40,12 +40,12 @@ try
     // Base de datos
     builder.Services.AddDbContext<ImperhaDbContext>(options =>
     {
-        options.UseSqlServer(
+        options.UseNpgsql(
             builder.Configuration.GetConnectionString("ImperhaDb"),
-            sqlOptions =>
+            npgsqlOptions =>
             {
-                sqlOptions.EnableRetryOnFailure(3);
-                sqlOptions.CommandTimeout(60);
+                npgsqlOptions.EnableRetryOnFailure(3);
+                npgsqlOptions.CommandTimeout(60);
             });
     });
 

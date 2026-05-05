@@ -1,0 +1,31 @@
+# Git
+.git
+.gitignore
+
+# Build artifacts
+**/bin
+**/obj
+
+# Frontend (no incluir en el build del API)
+frontend/
+frontend/node_modules
+
+# IDE
+.vs
+.vscode
+*.user
+
+# Logs
+logs/
+*.log
+
+# Ambiente local
+.env
+.env.local
+
+# Docker
+**/Dockerfile
+docker-compose*.yml
+
+# Docs
+*.md

@@ -1,184 +1,172 @@
 -- ===================================
 -- IMPERHA NÓMINAS - Sistema Enterprise
--- Tablas del módulo Corporativo
+-- Tablas del módulo Corporativo (PostgreSQL)
 -- ===================================
-
-USE ImperhaNomninas;
-GO
 
 -- ===================================
 -- TABLA: Empresas
 -- ===================================
-CREATE TABLE corp.Empresas (
-    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+CREATE TABLE corp."Empresas" (
+    "Id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 
-    -- Datos generales
-    RazonSocial NVARCHAR(250) NOT NULL,
-    NombreComercial NVARCHAR(250) NOT NULL,
-    Rfc NVARCHAR(13) NOT NULL,
-    RegimenFiscal NVARCHAR(100) NOT NULL,
-    CodigoRegimenFiscal NVARCHAR(10) NOT NULL,
+    "RazonSocial" VARCHAR(250) NOT NULL,
+    "NombreComercial" VARCHAR(250) NOT NULL,
+    "Rfc" VARCHAR(13) NOT NULL,
+    "RegimenFiscal" VARCHAR(100) NOT NULL,
+    "CodigoRegimenFiscal" VARCHAR(10) NOT NULL,
 
     -- Dirección fiscal
-    DireccionFiscalCalle NVARCHAR(250) NULL,
-    DireccionFiscalNumeroExterior NVARCHAR(50) NULL,
-    DireccionFiscalNumeroInterior NVARCHAR(50) NULL,
-    DireccionFiscalColonia NVARCHAR(150) NULL,
-    DireccionFiscalCodigoPostal NVARCHAR(10) NULL,
-    DireccionFiscalMunicipio NVARCHAR(150) NULL,
-    DireccionFiscalEstado NVARCHAR(100) NULL,
-    DireccionFiscalPais NVARCHAR(100) DEFAULT 'México',
+    "DireccionFiscalCalle" VARCHAR(250) NULL,
+    "DireccionFiscalNumeroExterior" VARCHAR(50) NULL,
+    "DireccionFiscalNumeroInterior" VARCHAR(50) NULL,
+    "DireccionFiscalColonia" VARCHAR(150) NULL,
+    "DireccionFiscalCodigoPostal" VARCHAR(10) NULL,
+    "DireccionFiscalMunicipio" VARCHAR(150) NULL,
+    "DireccionFiscalEstado" VARCHAR(100) NULL,
+    "DireccionFiscalPais" VARCHAR(100) DEFAULT 'México',
 
     -- Contacto
-    Telefono NVARCHAR(50) NULL,
-    CorreoElectronico NVARCHAR(150) NULL,
-    SitioWeb NVARCHAR(250) NULL,
+    "Telefono" VARCHAR(50) NULL,
+    "CorreoElectronico" VARCHAR(150) NULL,
+    "SitioWeb" VARCHAR(250) NULL,
 
     -- Branding
-    RutaLogo NVARCHAR(500) NULL,
-    ColorPrimario NVARCHAR(20) DEFAULT '#1976D2',
-    ColorSecundario NVARCHAR(20) DEFAULT '#424242',
-    ColorAcento NVARCHAR(20) DEFAULT '#FF5722',
+    "RutaLogo" VARCHAR(500) NULL,
+    "ColorPrimario" VARCHAR(20) DEFAULT '#1976D2',
+    "ColorSecundario" VARCHAR(20) DEFAULT '#424242',
+    "ColorAcento" VARCHAR(20) DEFAULT '#FF5722',
 
-    -- Configuración fiscal
-    RegistroPatronalImss NVARCHAR(20) NULL,
-    RegistroInfonavit NVARCHAR(20) NULL,
-    RutaCertificadoCsd NVARCHAR(500) NULL,
-    RutaLlaveCsd NVARCHAR(500) NULL,
-    ContrasenasCsdEncriptada NVARCHAR(500) NULL,
-    VigenciaCsd DATETIME2 NULL,
+    -- Fiscal
+    "RegistroPatronalImss" VARCHAR(20) NULL,
+    "RegistroInfonavit" VARCHAR(20) NULL,
+    "RutaCertificadoCsd" VARCHAR(500) NULL,
+    "RutaLlaveCsd" VARCHAR(500) NULL,
+    "ContrasenasCsdEncriptada" VARCHAR(500) NULL,
+    "VigenciaCsd" TIMESTAMPTZ NULL,
 
-    -- Configuración recibos
-    TextoLegalRecibos NVARCHAR(2000) NULL,
-    PiePaginaRecibos NVARCHAR(500) NULL,
+    -- Recibos
+    "TextoLegalRecibos" VARCHAR(2000) NULL,
+    "PiePaginaRecibos" VARCHAR(500) NULL,
 
     -- Auditoría
-    FechaCreacion DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
-    FechaModificacion DATETIME2 NULL,
-    UsuarioCreacionId UNIQUEIDENTIFIER NULL,
-    UsuarioModificacionId UNIQUEIDENTIFIER NULL,
-    Activo BIT NOT NULL DEFAULT 1,
-    FechaEliminacion DATETIME2 NULL,
-    UsuarioEliminacionId UNIQUEIDENTIFIER NULL,
-    Version INT NOT NULL DEFAULT 1
+    "FechaCreacion" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    "FechaModificacion" TIMESTAMPTZ NULL,
+    "UsuarioCreacionId" UUID NULL,
+    "UsuarioModificacionId" UUID NULL,
+    "Activo" BOOLEAN NOT NULL DEFAULT TRUE,
+    "FechaEliminacion" TIMESTAMPTZ NULL,
+    "UsuarioEliminacionId" UUID NULL,
+    "Version" INT NOT NULL DEFAULT 1
 );
-GO
 
-CREATE UNIQUE INDEX IX_Empresas_Rfc ON corp.Empresas(Rfc) WHERE Activo = 1;
-CREATE INDEX IX_Empresas_Activo ON corp.Empresas(Activo);
-GO
+CREATE UNIQUE INDEX "IX_Empresas_Rfc" ON corp."Empresas"("Rfc") WHERE "Activo" = TRUE;
+CREATE INDEX "IX_Empresas_Activo" ON corp."Empresas"("Activo");
 
 -- ===================================
 -- TABLA: Ingenios
 -- ===================================
-CREATE TABLE corp.Ingenios (
-    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    EmpresaId UNIQUEIDENTIFIER NOT NULL,
+CREATE TABLE corp."Ingenios" (
+    "Id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    "EmpresaId" UUID NOT NULL,
 
-    -- Datos generales
-    Nombre NVARCHAR(150) NOT NULL,
-    Clave NVARCHAR(20) NOT NULL,
-    Descripcion NVARCHAR(500) NULL,
+    "Nombre" VARCHAR(150) NOT NULL,
+    "Clave" VARCHAR(20) NOT NULL,
+    "Descripcion" VARCHAR(500) NULL,
 
     -- Ubicación
-    Direccion NVARCHAR(500) NULL,
-    Municipio NVARCHAR(150) NULL,
-    Estado NVARCHAR(100) NULL,
-    CodigoPostal NVARCHAR(10) NULL,
-    Latitud DECIMAL(18,10) NULL,
-    Longitud DECIMAL(18,10) NULL,
+    "Direccion" VARCHAR(500) NULL,
+    "Municipio" VARCHAR(150) NULL,
+    "Estado" VARCHAR(100) NULL,
+    "CodigoPostal" VARCHAR(10) NULL,
+    "Latitud" DECIMAL(18,10) NULL,
+    "Longitud" DECIMAL(18,10) NULL,
 
-    -- Configuración fiscal
-    RegistroPatronalImss NVARCHAR(20) NOT NULL,
-    ClaseRiesgoImss INT NOT NULL DEFAULT 5,
-    PrimaRiesgoTrabajo DECIMAL(10,5) NOT NULL DEFAULT 7.58875,
-    RegistroInfonavit NVARCHAR(20) NULL,
+    -- Fiscal
+    "RegistroPatronalImss" VARCHAR(20) NOT NULL,
+    "ClaseRiesgoImss" INT NOT NULL DEFAULT 5,
+    "PrimaRiesgoTrabajo" DECIMAL(10,5) NOT NULL DEFAULT 7.58875,
+    "RegistroInfonavit" VARCHAR(20) NULL,
 
     -- Zafra
-    EnZafra BIT NOT NULL DEFAULT 0,
-    InicioZafraActual DATETIME2 NULL,
-    FinZafraEstimado DATETIME2 NULL,
-    NumeroZafra NVARCHAR(20) NULL,
+    "EnZafra" BOOLEAN NOT NULL DEFAULT FALSE,
+    "InicioZafraActual" TIMESTAMPTZ NULL,
+    "FinZafraEstimado" TIMESTAMPTZ NULL,
+    "NumeroZafra" VARCHAR(20) NULL,
 
     -- Operativo
-    CapacidadMoliendaDiaria DECIMAL(18,2) NULL,
-    NumeroEmpleadosActivos INT NOT NULL DEFAULT 0,
-    ZonaSalarioMinimo NVARCHAR(10) DEFAULT 'UNICA',
+    "CapacidadMoliendaDiaria" DECIMAL(18,2) NULL,
+    "NumeroEmpleadosActivos" INT NOT NULL DEFAULT 0,
+    "ZonaSalarioMinimo" VARCHAR(10) DEFAULT 'UNICA',
 
     -- Branding
-    RutaLogo NVARCHAR(500) NULL,
-    ColorPrimario NVARCHAR(20) NULL,
+    "RutaLogo" VARCHAR(500) NULL,
+    "ColorPrimario" VARCHAR(20) NULL,
 
     -- Contacto
-    Telefono NVARCHAR(50) NULL,
-    CorreoElectronico NVARCHAR(150) NULL,
-    NombreResponsable NVARCHAR(200) NULL,
+    "Telefono" VARCHAR(50) NULL,
+    "CorreoElectronico" VARCHAR(150) NULL,
+    "NombreResponsable" VARCHAR(200) NULL,
 
     -- Auditoría
-    FechaCreacion DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
-    FechaModificacion DATETIME2 NULL,
-    UsuarioCreacionId UNIQUEIDENTIFIER NULL,
-    UsuarioModificacionId UNIQUEIDENTIFIER NULL,
-    Activo BIT NOT NULL DEFAULT 1,
-    FechaEliminacion DATETIME2 NULL,
-    UsuarioEliminacionId UNIQUEIDENTIFIER NULL,
-    Version INT NOT NULL DEFAULT 1,
-    OrigenRegistro NVARCHAR(50) NULL,
-    LoteImportacionId UNIQUEIDENTIFIER NULL,
-    NotasAuditoria NVARCHAR(MAX) NULL,
-    DireccionIp NVARCHAR(50) NULL,
-    AgenteUsuario NVARCHAR(500) NULL,
-    IngenioId UNIQUEIDENTIFIER NULL,
+    "FechaCreacion" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    "FechaModificacion" TIMESTAMPTZ NULL,
+    "UsuarioCreacionId" UUID NULL,
+    "UsuarioModificacionId" UUID NULL,
+    "Activo" BOOLEAN NOT NULL DEFAULT TRUE,
+    "FechaEliminacion" TIMESTAMPTZ NULL,
+    "UsuarioEliminacionId" UUID NULL,
+    "Version" INT NOT NULL DEFAULT 1,
+    "OrigenRegistro" VARCHAR(50) NULL,
+    "LoteImportacionId" UUID NULL,
+    "NotasAuditoria" TEXT NULL,
+    "DireccionIp" VARCHAR(50) NULL,
+    "AgenteUsuario" VARCHAR(500) NULL,
+    "IngenioId" UUID NULL,
 
-    FOREIGN KEY (EmpresaId) REFERENCES corp.Empresas(Id)
+    FOREIGN KEY ("EmpresaId") REFERENCES corp."Empresas"("Id")
 );
-GO
 
-CREATE UNIQUE INDEX IX_Ingenios_EmpresaClave ON corp.Ingenios(EmpresaId, Clave) WHERE Activo = 1;
-CREATE INDEX IX_Ingenios_RegistroPatronalImss ON corp.Ingenios(RegistroPatronalImss);
-CREATE INDEX IX_Ingenios_Activo ON corp.Ingenios(Activo);
-CREATE INDEX IX_Ingenios_EnZafra ON corp.Ingenios(EnZafra);
-GO
+CREATE UNIQUE INDEX "IX_Ingenios_EmpresaClave" ON corp."Ingenios"("EmpresaId", "Clave") WHERE "Activo" = TRUE;
+CREATE INDEX "IX_Ingenios_RegistroPatronalImss" ON corp."Ingenios"("RegistroPatronalImss");
+CREATE INDEX "IX_Ingenios_Activo" ON corp."Ingenios"("Activo");
+CREATE INDEX "IX_Ingenios_EnZafra" ON corp."Ingenios"("EnZafra");
 
 -- ===================================
 -- TABLA: ConfiguracionEmpresa
 -- ===================================
-CREATE TABLE corp.ConfiguracionEmpresa (
-    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    EmpresaId UNIQUEIDENTIFIER NOT NULL,
+CREATE TABLE corp."ConfiguracionEmpresa" (
+    "Id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    "EmpresaId" UUID NOT NULL,
 
-    -- Configuración de nómina
-    DiasAguinaldo INT NOT NULL DEFAULT 15,
-    PorcentajePrimaVacacional DECIMAL(5,2) NOT NULL DEFAULT 25.00,
-    DiasGraciaFaltas INT NOT NULL DEFAULT 0,
-    AplicaSubsidioEmpleoDefecto BIT NOT NULL DEFAULT 1,
+    -- Nómina
+    "DiasAguinaldo" INT NOT NULL DEFAULT 15,
+    "PorcentajePrimaVacacional" DECIMAL(5,2) NOT NULL DEFAULT 25.00,
+    "DiasGraciaFaltas" INT NOT NULL DEFAULT 0,
+    "AplicaSubsidioEmpleoDefecto" BOOLEAN NOT NULL DEFAULT TRUE,
 
-    -- Configuración CFDI
-    ProveedorTimbrado NVARCHAR(50) NULL,
-    UsuarioPac NVARCHAR(100) NULL,
-    PasswordPacEncriptado NVARCHAR(500) NULL,
-    ModoProduccionCfdi BIT NOT NULL DEFAULT 0,
+    -- CFDI
+    "ProveedorTimbrado" VARCHAR(50) NULL,
+    "UsuarioPac" VARCHAR(100) NULL,
+    "PasswordPacEncriptado" VARCHAR(500) NULL,
+    "ModoProduccionCfdi" BOOLEAN NOT NULL DEFAULT FALSE,
 
-    -- Configuración de correo
-    ServidorSmtp NVARCHAR(250) NULL,
-    PuertoSmtp INT NULL,
-    UsuarioSmtp NVARCHAR(150) NULL,
-    PasswordSmtpEncriptado NVARCHAR(500) NULL,
-    UsarSsl BIT NOT NULL DEFAULT 1,
-    CorreoRemitente NVARCHAR(150) NULL,
+    -- Correo
+    "ServidorSmtp" VARCHAR(250) NULL,
+    "PuertoSmtp" INT NULL,
+    "UsuarioSmtp" VARCHAR(150) NULL,
+    "PasswordSmtpEncriptado" VARCHAR(500) NULL,
+    "UsarSsl" BOOLEAN NOT NULL DEFAULT TRUE,
+    "CorreoRemitente" VARCHAR(150) NULL,
 
     -- Auditoría
-    FechaCreacion DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
-    FechaModificacion DATETIME2 NULL,
-    UsuarioModificacionId UNIQUEIDENTIFIER NULL,
-    Version INT NOT NULL DEFAULT 1,
+    "FechaCreacion" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    "FechaModificacion" TIMESTAMPTZ NULL,
+    "UsuarioModificacionId" UUID NULL,
+    "Version" INT NOT NULL DEFAULT 1,
 
-    FOREIGN KEY (EmpresaId) REFERENCES corp.Empresas(Id)
+    FOREIGN KEY ("EmpresaId") REFERENCES corp."Empresas"("Id")
 );
-GO
 
-CREATE UNIQUE INDEX IX_ConfiguracionEmpresa_EmpresaId ON corp.ConfiguracionEmpresa(EmpresaId);
-GO
+CREATE UNIQUE INDEX "IX_ConfiguracionEmpresa_EmpresaId" ON corp."ConfiguracionEmpresa"("EmpresaId");
 
-PRINT 'Tablas corporativas creadas correctamente';
-GO
+DO $$ BEGIN RAISE NOTICE 'Tablas corporativas creadas correctamente'; END $$;

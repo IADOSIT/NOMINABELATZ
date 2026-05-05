@@ -1,184 +1,159 @@
 -- ===================================
 -- IMPERHA NÓMINAS - Sistema Enterprise
--- Tablas del módulo de Seguridad
+-- Tablas del módulo de Seguridad (PostgreSQL)
 -- ===================================
-
-USE ImperhaNomninas;
-GO
 
 -- ===================================
 -- TABLA: Usuarios
 -- ===================================
-CREATE TABLE seg.Usuarios (
-    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    NombreUsuario NVARCHAR(100) NOT NULL,
-    CorreoElectronico NVARCHAR(256) NOT NULL,
-    PasswordHash NVARCHAR(500) NOT NULL,
-    Nombres NVARCHAR(150) NOT NULL,
-    ApellidoPaterno NVARCHAR(100) NOT NULL,
-    ApellidoMaterno NVARCHAR(100) NULL,
-    Telefono NVARCHAR(20) NULL,
-    RutaFoto NVARCHAR(500) NULL,
+CREATE TABLE seg."Usuarios" (
+    "Id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    "NombreUsuario" VARCHAR(100) NOT NULL,
+    "CorreoElectronico" VARCHAR(256) NOT NULL,
+    "PasswordHash" VARCHAR(500) NOT NULL,
+    "Nombres" VARCHAR(150) NOT NULL,
+    "ApellidoPaterno" VARCHAR(100) NOT NULL,
+    "ApellidoMaterno" VARCHAR(100) NULL,
+    "Telefono" VARCHAR(20) NULL,
+    "RutaFoto" VARCHAR(500) NULL,
 
     -- Seguridad
-    IntentosFallidos INT NOT NULL DEFAULT 0,
-    BloqueadoHasta DATETIME2 NULL,
-    UltimoAcceso DATETIME2 NULL,
-    CambiarPasswordProximoLogin BIT NOT NULL DEFAULT 0,
-    TokenRecuperacion NVARCHAR(500) NULL,
-    FechaExpiracionToken DATETIME2 NULL,
+    "IntentosFallidos" INT NOT NULL DEFAULT 0,
+    "BloqueadoHasta" TIMESTAMPTZ NULL,
+    "UltimoAcceso" TIMESTAMPTZ NULL,
+    "CambiarPasswordProximoLogin" BOOLEAN NOT NULL DEFAULT FALSE,
+    "TokenRecuperacion" VARCHAR(500) NULL,
+    "FechaExpiracionToken" TIMESTAMPTZ NULL,
 
     -- Multi-empresa
-    EmpresaId UNIQUEIDENTIFIER NULL,
-    IngenioId UNIQUEIDENTIFIER NULL,
-    PuedeAccederTodasEmpresas BIT NOT NULL DEFAULT 0,
-    PuedeAccederTodosIngenios BIT NOT NULL DEFAULT 0,
+    "EmpresaId" UUID NULL,
+    "IngenioId" UUID NULL,
+    "PuedeAccederTodasEmpresas" BOOLEAN NOT NULL DEFAULT FALSE,
+    "PuedeAccederTodosIngenios" BOOLEAN NOT NULL DEFAULT FALSE,
 
     -- Auditoría
-    FechaCreacion DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
-    FechaModificacion DATETIME2 NULL,
-    UsuarioCreacionId UNIQUEIDENTIFIER NULL,
-    UsuarioModificacionId UNIQUEIDENTIFIER NULL,
-    Activo BIT NOT NULL DEFAULT 1,
-    FechaEliminacion DATETIME2 NULL,
-    UsuarioEliminacionId UNIQUEIDENTIFIER NULL,
-    Version INT NOT NULL DEFAULT 1
+    "FechaCreacion" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    "FechaModificacion" TIMESTAMPTZ NULL,
+    "UsuarioCreacionId" UUID NULL,
+    "UsuarioModificacionId" UUID NULL,
+    "Activo" BOOLEAN NOT NULL DEFAULT TRUE,
+    "FechaEliminacion" TIMESTAMPTZ NULL,
+    "UsuarioEliminacionId" UUID NULL,
+    "Version" INT NOT NULL DEFAULT 1
 );
-GO
 
-CREATE UNIQUE INDEX IX_Usuarios_NombreUsuario ON seg.Usuarios(NombreUsuario) WHERE Activo = 1;
-CREATE UNIQUE INDEX IX_Usuarios_CorreoElectronico ON seg.Usuarios(CorreoElectronico) WHERE Activo = 1;
-CREATE INDEX IX_Usuarios_EmpresaId ON seg.Usuarios(EmpresaId);
-CREATE INDEX IX_Usuarios_Activo ON seg.Usuarios(Activo);
-GO
+CREATE UNIQUE INDEX "IX_Usuarios_NombreUsuario" ON seg."Usuarios"("NombreUsuario") WHERE "Activo" = TRUE;
+CREATE UNIQUE INDEX "IX_Usuarios_CorreoElectronico" ON seg."Usuarios"("CorreoElectronico") WHERE "Activo" = TRUE;
+CREATE INDEX "IX_Usuarios_EmpresaId" ON seg."Usuarios"("EmpresaId");
+CREATE INDEX "IX_Usuarios_Activo" ON seg."Usuarios"("Activo");
 
 -- ===================================
 -- TABLA: Roles
 -- ===================================
-CREATE TABLE seg.Roles (
-    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    Nombre NVARCHAR(100) NOT NULL,
-    Descripcion NVARCHAR(500) NULL,
-    EsRolSistema BIT NOT NULL DEFAULT 0,
-    EmpresaId UNIQUEIDENTIFIER NULL, -- NULL = rol global
+CREATE TABLE seg."Roles" (
+    "Id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    "Nombre" VARCHAR(100) NOT NULL,
+    "Descripcion" VARCHAR(500) NULL,
+    "EsRolSistema" BOOLEAN NOT NULL DEFAULT FALSE,
+    "EmpresaId" UUID NULL,
 
     -- Auditoría
-    FechaCreacion DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
-    FechaModificacion DATETIME2 NULL,
-    UsuarioCreacionId UNIQUEIDENTIFIER NULL,
-    UsuarioModificacionId UNIQUEIDENTIFIER NULL,
-    Activo BIT NOT NULL DEFAULT 1,
-    Version INT NOT NULL DEFAULT 1
+    "FechaCreacion" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    "FechaModificacion" TIMESTAMPTZ NULL,
+    "UsuarioCreacionId" UUID NULL,
+    "UsuarioModificacionId" UUID NULL,
+    "Activo" BOOLEAN NOT NULL DEFAULT TRUE,
+    "Version" INT NOT NULL DEFAULT 1
 );
-GO
 
-CREATE UNIQUE INDEX IX_Roles_Nombre_Empresa ON seg.Roles(Nombre, EmpresaId) WHERE Activo = 1;
-GO
+CREATE UNIQUE INDEX "IX_Roles_Nombre_Empresa" ON seg."Roles"("Nombre", "EmpresaId") WHERE "Activo" = TRUE;
 
 -- ===================================
 -- TABLA: Permisos
 -- ===================================
-CREATE TABLE seg.Permisos (
-    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    Modulo NVARCHAR(100) NOT NULL,
-    Accion NVARCHAR(100) NOT NULL,
-    Descripcion NVARCHAR(500) NULL,
-    Activo BIT NOT NULL DEFAULT 1
+CREATE TABLE seg."Permisos" (
+    "Id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    "Modulo" VARCHAR(100) NOT NULL,
+    "Accion" VARCHAR(100) NOT NULL,
+    "Descripcion" VARCHAR(500) NULL,
+    "Activo" BOOLEAN NOT NULL DEFAULT TRUE
 );
-GO
 
-CREATE UNIQUE INDEX IX_Permisos_ModuloAccion ON seg.Permisos(Modulo, Accion);
-GO
+CREATE UNIQUE INDEX "IX_Permisos_ModuloAccion" ON seg."Permisos"("Modulo", "Accion");
 
 -- ===================================
 -- TABLA: UsuariosRoles
 -- ===================================
-CREATE TABLE seg.UsuariosRoles (
-    UsuarioId UNIQUEIDENTIFIER NOT NULL,
-    RolId UNIQUEIDENTIFIER NOT NULL,
-    FechaAsignacion DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
-    AsignadoPorId UNIQUEIDENTIFIER NULL,
+CREATE TABLE seg."UsuariosRoles" (
+    "UsuarioId" UUID NOT NULL,
+    "RolId" UUID NOT NULL,
+    "FechaAsignacion" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    "AsignadoPorId" UUID NULL,
 
-    PRIMARY KEY (UsuarioId, RolId),
-    FOREIGN KEY (UsuarioId) REFERENCES seg.Usuarios(Id),
-    FOREIGN KEY (RolId) REFERENCES seg.Roles(Id)
+    PRIMARY KEY ("UsuarioId", "RolId"),
+    FOREIGN KEY ("UsuarioId") REFERENCES seg."Usuarios"("Id"),
+    FOREIGN KEY ("RolId") REFERENCES seg."Roles"("Id")
 );
-GO
 
 -- ===================================
 -- TABLA: RolesPermisos
 -- ===================================
-CREATE TABLE seg.RolesPermisos (
-    RolId UNIQUEIDENTIFIER NOT NULL,
-    PermisoId UNIQUEIDENTIFIER NOT NULL,
+CREATE TABLE seg."RolesPermisos" (
+    "RolId" UUID NOT NULL,
+    "PermisoId" UUID NOT NULL,
 
-    PRIMARY KEY (RolId, PermisoId),
-    FOREIGN KEY (RolId) REFERENCES seg.Roles(Id),
-    FOREIGN KEY (PermisoId) REFERENCES seg.Permisos(Id)
+    PRIMARY KEY ("RolId", "PermisoId"),
+    FOREIGN KEY ("RolId") REFERENCES seg."Roles"("Id"),
+    FOREIGN KEY ("PermisoId") REFERENCES seg."Permisos"("Id")
 );
-GO
 
 -- ===================================
 -- TABLA: SesionesUsuario
 -- ===================================
-CREATE TABLE seg.SesionesUsuario (
-    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    UsuarioId UNIQUEIDENTIFIER NOT NULL,
-    Token NVARCHAR(1000) NOT NULL,
-    RefreshToken NVARCHAR(500) NULL,
-    FechaInicio DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
-    FechaExpiracion DATETIME2 NOT NULL,
-    FechaExpiracionRefresh DATETIME2 NULL,
-    DireccionIp NVARCHAR(50) NULL,
-    AgenteUsuario NVARCHAR(500) NULL,
-    Activa BIT NOT NULL DEFAULT 1,
+CREATE TABLE seg."SesionesUsuario" (
+    "Id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    "UsuarioId" UUID NOT NULL,
+    "Token" VARCHAR(1000) NOT NULL,
+    "RefreshToken" VARCHAR(500) NULL,
+    "FechaInicio" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    "FechaExpiracion" TIMESTAMPTZ NOT NULL,
+    "FechaExpiracionRefresh" TIMESTAMPTZ NULL,
+    "DireccionIp" VARCHAR(50) NULL,
+    "AgenteUsuario" VARCHAR(500) NULL,
+    "Activa" BOOLEAN NOT NULL DEFAULT TRUE,
 
-    FOREIGN KEY (UsuarioId) REFERENCES seg.Usuarios(Id)
+    FOREIGN KEY ("UsuarioId") REFERENCES seg."Usuarios"("Id")
 );
-GO
 
-CREATE INDEX IX_SesionesUsuario_UsuarioId ON seg.SesionesUsuario(UsuarioId);
-CREATE INDEX IX_SesionesUsuario_Token ON seg.SesionesUsuario(Token);
-GO
+CREATE INDEX "IX_SesionesUsuario_UsuarioId" ON seg."SesionesUsuario"("UsuarioId");
+CREATE INDEX "IX_SesionesUsuario_Token" ON seg."SesionesUsuario"("Token");
 
 -- ===================================
 -- DATOS INICIALES DE SEGURIDAD
 -- ===================================
 
--- Insertar roles del sistema
-INSERT INTO seg.Roles (Id, Nombre, Descripcion, EsRolSistema) VALUES
-    (NEWID(), 'Administrador', 'Acceso completo al sistema', 1),
-    (NEWID(), 'Nominas', 'Gestión de nóminas y cálculos', 1),
-    (NEWID(), 'RecursosHumanos', 'Gestión de empleados y expedientes', 1),
-    (NEWID(), 'Contabilidad', 'Acceso a módulo contable', 1),
-    (NEWID(), 'Consulta', 'Solo lectura', 1),
-    (NEWID(), 'Kiosko', 'Acceso al kiosko del empleado', 1);
-GO
+INSERT INTO seg."Roles" ("Id", "Nombre", "Descripcion", "EsRolSistema") VALUES
+    (gen_random_uuid(), 'Administrador', 'Acceso completo al sistema', TRUE),
+    (gen_random_uuid(), 'Nominas', 'Gestión de nóminas y cálculos', TRUE),
+    (gen_random_uuid(), 'RecursosHumanos', 'Gestión de empleados y expedientes', TRUE),
+    (gen_random_uuid(), 'Contabilidad', 'Acceso a módulo contable', TRUE),
+    (gen_random_uuid(), 'Consulta', 'Solo lectura', TRUE),
+    (gen_random_uuid(), 'Kiosko', 'Acceso al kiosko del empleado', TRUE);
 
--- Insertar permisos del sistema
-INSERT INTO seg.Permisos (Id, Modulo, Accion, Descripcion) VALUES
-    -- Empleados
-    (NEWID(), 'Empleados', 'Ver', 'Ver lista de empleados'),
-    (NEWID(), 'Empleados', 'Crear', 'Crear nuevos empleados'),
-    (NEWID(), 'Empleados', 'Editar', 'Modificar empleados'),
-    (NEWID(), 'Empleados', 'Eliminar', 'Dar de baja empleados'),
-    (NEWID(), 'Empleados', 'Exportar', 'Exportar información de empleados'),
+INSERT INTO seg."Permisos" ("Id", "Modulo", "Accion", "Descripcion") VALUES
+    (gen_random_uuid(), 'Empleados', 'Ver', 'Ver lista de empleados'),
+    (gen_random_uuid(), 'Empleados', 'Crear', 'Crear nuevos empleados'),
+    (gen_random_uuid(), 'Empleados', 'Editar', 'Modificar empleados'),
+    (gen_random_uuid(), 'Empleados', 'Eliminar', 'Dar de baja empleados'),
+    (gen_random_uuid(), 'Empleados', 'Exportar', 'Exportar información de empleados'),
+    (gen_random_uuid(), 'Nomina', 'Ver', 'Ver nóminas'),
+    (gen_random_uuid(), 'Nomina', 'Calcular', 'Calcular nóminas'),
+    (gen_random_uuid(), 'Nomina', 'Cerrar', 'Cerrar periodos'),
+    (gen_random_uuid(), 'Nomina', 'Timbrar', 'Timbrar CFDI'),
+    (gen_random_uuid(), 'Nomina', 'Cancelar', 'Cancelar CFDI'),
+    (gen_random_uuid(), 'Configuracion', 'Ver', 'Ver configuración'),
+    (gen_random_uuid(), 'Configuracion', 'Editar', 'Modificar configuración'),
+    (gen_random_uuid(), 'Auditoria', 'Ver', 'Ver bitácoras'),
+    (gen_random_uuid(), 'Auditoria', 'Exportar', 'Exportar bitácoras');
 
-    -- Nómina
-    (NEWID(), 'Nomina', 'Ver', 'Ver nóminas'),
-    (NEWID(), 'Nomina', 'Calcular', 'Calcular nóminas'),
-    (NEWID(), 'Nomina', 'Cerrar', 'Cerrar periodos'),
-    (NEWID(), 'Nomina', 'Timbrar', 'Timbrar CFDI'),
-    (NEWID(), 'Nomina', 'Cancelar', 'Cancelar CFDI'),
-
-    -- Configuración
-    (NEWID(), 'Configuracion', 'Ver', 'Ver configuración'),
-    (NEWID(), 'Configuracion', 'Editar', 'Modificar configuración'),
-
-    -- Auditoría
-    (NEWID(), 'Auditoria', 'Ver', 'Ver bitácoras'),
-    (NEWID(), 'Auditoria', 'Exportar', 'Exportar bitácoras');
-GO
-
-PRINT 'Tablas de seguridad creadas correctamente';
-GO
+DO $$ BEGIN RAISE NOTICE 'Tablas de seguridad creadas correctamente'; END $$;

@@ -1,31 +1,19 @@
-# Stage 1: Build
-FROM node:18-alpine AS build
-
+FROM node:20-alpine AS build
 WORKDIR /app
 
-# Copy package.json and package-lock.json
-COPY package*.json ./
+ARG VITE_API_URL=/api
+ENV VITE_API_URL=$VITE_API_URL
 
-# Install dependencies
-RUN npm install
+# Instalar dependencias primero (mejor cache)
+COPY package*.json .
+RUN npm ci
 
-# Copy the rest of the application code
 COPY . .
+RUN npm run build
 
-# Build the application (skipping tsc to bypass type errors during build)
-RUN npx vite build
-
-# Stage 2: Serve
-FROM nginx:stable-alpine
-
-# Copy the build output to nginx html folder
+FROM nginx:alpine AS runtime
 COPY --from=build /app/dist /usr/share/nginx/html
-
-# Copy the nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Expose port 80
 EXPOSE 80
-
-# Start nginx
 CMD ["nginx", "-g", "daemon off;"]

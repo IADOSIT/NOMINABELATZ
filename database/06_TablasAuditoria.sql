@@ -1,187 +1,170 @@
 -- ===================================
 -- IMPERHA NÓMINAS - Sistema Enterprise
--- Tablas del módulo de Auditoría
+-- Tablas del módulo de Auditoría (PostgreSQL)
 -- ===================================
-
-USE ImperhaNomninas;
-GO
 
 -- ===================================
 -- TABLA: RegistrosAuditoria
 -- ===================================
-CREATE TABLE aud.RegistrosAuditoria (
-    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    UsuarioId UNIQUEIDENTIFIER NOT NULL,
-    EmpresaId UNIQUEIDENTIFIER NULL,
-    IngenioId UNIQUEIDENTIFIER NULL,
+CREATE TABLE aud."RegistrosAuditoria" (
+    "Id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    "UsuarioId" UUID NOT NULL,
+    "EmpresaId" UUID NULL,
+    "IngenioId" UUID NULL,
 
-    FechaHora DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
-    TipoAccion NVARCHAR(50) NOT NULL, -- Added, Modified, Deleted
-    NombreEntidad NVARCHAR(100) NOT NULL,
-    EntidadId UNIQUEIDENTIFIER NOT NULL,
+    "FechaHora" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    "TipoAccion" VARCHAR(50) NOT NULL,
+    "NombreEntidad" VARCHAR(100) NOT NULL,
+    "EntidadId" UUID NOT NULL,
 
-    ValoresAnteriores NVARCHAR(MAX) NULL, -- JSON
-    ValoresNuevos NVARCHAR(MAX) NULL, -- JSON
+    "ValoresAnteriores" TEXT NULL,
+    "ValoresNuevos" TEXT NULL,
 
-    DireccionIp NVARCHAR(50) NULL,
-    AgenteUsuario NVARCHAR(500) NULL,
+    "DireccionIp" VARCHAR(50) NULL,
+    "AgenteUsuario" VARCHAR(500) NULL,
 
-    -- Índice para búsquedas por fecha
-    FechaHoraLocal AS DATEADD(HOUR, -6, FechaHora) PERSISTED
+    -- Columna generada equivalente a DATEADD(HOUR, -6, FechaHora)
+    "FechaHoraLocal" TIMESTAMPTZ GENERATED ALWAYS AS ("FechaHora" - INTERVAL '6 hours') STORED
 );
-GO
 
-CREATE INDEX IX_RegistrosAuditoria_FechaHora ON aud.RegistrosAuditoria(FechaHora);
-CREATE INDEX IX_RegistrosAuditoria_UsuarioId ON aud.RegistrosAuditoria(UsuarioId);
-CREATE INDEX IX_RegistrosAuditoria_EmpresaId ON aud.RegistrosAuditoria(EmpresaId);
-CREATE INDEX IX_RegistrosAuditoria_NombreEntidad ON aud.RegistrosAuditoria(NombreEntidad);
-CREATE INDEX IX_RegistrosAuditoria_EntidadId ON aud.RegistrosAuditoria(NombreEntidad, EntidadId);
-GO
+CREATE INDEX "IX_RegistrosAuditoria_FechaHora" ON aud."RegistrosAuditoria"("FechaHora");
+CREATE INDEX "IX_RegistrosAuditoria_UsuarioId" ON aud."RegistrosAuditoria"("UsuarioId");
+CREATE INDEX "IX_RegistrosAuditoria_EmpresaId" ON aud."RegistrosAuditoria"("EmpresaId");
+CREATE INDEX "IX_RegistrosAuditoria_NombreEntidad" ON aud."RegistrosAuditoria"("NombreEntidad");
+CREATE INDEX "IX_RegistrosAuditoria_EntidadId" ON aud."RegistrosAuditoria"("NombreEntidad", "EntidadId");
 
 -- ===================================
 -- TABLA: BitacoraAccesos
 -- ===================================
-CREATE TABLE aud.BitacoraAccesos (
-    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    UsuarioId UNIQUEIDENTIFIER NULL,
-    NombreUsuario NVARCHAR(100) NOT NULL,
+CREATE TABLE aud."BitacoraAccesos" (
+    "Id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    "UsuarioId" UUID NULL,
+    "NombreUsuario" VARCHAR(100) NOT NULL,
 
-    FechaHora DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
-    TipoEvento NVARCHAR(50) NOT NULL, -- Login, Logout, LoginFallido, CambioPassword, etc.
-    Exitoso BIT NOT NULL,
-    MensajeError NVARCHAR(500) NULL,
+    "FechaHora" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    "TipoEvento" VARCHAR(50) NOT NULL,
+    "Exitoso" BOOLEAN NOT NULL,
+    "MensajeError" VARCHAR(500) NULL,
 
-    DireccionIp NVARCHAR(50) NULL,
-    AgenteUsuario NVARCHAR(500) NULL,
+    "DireccionIp" VARCHAR(50) NULL,
+    "AgenteUsuario" VARCHAR(500) NULL,
 
-    EmpresaId UNIQUEIDENTIFIER NULL,
-    IngenioId UNIQUEIDENTIFIER NULL
+    "EmpresaId" UUID NULL,
+    "IngenioId" UUID NULL
 );
-GO
 
-CREATE INDEX IX_BitacoraAccesos_FechaHora ON aud.BitacoraAccesos(FechaHora);
-CREATE INDEX IX_BitacoraAccesos_UsuarioId ON aud.BitacoraAccesos(UsuarioId);
-CREATE INDEX IX_BitacoraAccesos_TipoEvento ON aud.BitacoraAccesos(TipoEvento);
-CREATE INDEX IX_BitacoraAccesos_DireccionIp ON aud.BitacoraAccesos(DireccionIp);
-GO
+CREATE INDEX "IX_BitacoraAccesos_FechaHora" ON aud."BitacoraAccesos"("FechaHora");
+CREATE INDEX "IX_BitacoraAccesos_UsuarioId" ON aud."BitacoraAccesos"("UsuarioId");
+CREATE INDEX "IX_BitacoraAccesos_TipoEvento" ON aud."BitacoraAccesos"("TipoEvento");
+CREATE INDEX "IX_BitacoraAccesos_DireccionIp" ON aud."BitacoraAccesos"("DireccionIp");
 
 -- ===================================
 -- TABLA: HistorialCambiosSalario
 -- ===================================
-CREATE TABLE aud.HistorialCambiosSalario (
-    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    EmpleadoId UNIQUEIDENTIFIER NOT NULL,
+CREATE TABLE aud."HistorialCambiosSalario" (
+    "Id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    "EmpleadoId" UUID NOT NULL,
 
-    FechaCambio DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
-    FechaEfectiva DATE NOT NULL,
+    "FechaCambio" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    "FechaEfectiva" DATE NOT NULL,
 
-    SalarioAnterior DECIMAL(18,4) NOT NULL,
-    SalarioNuevo DECIMAL(18,4) NOT NULL,
-    SdiAnterior DECIMAL(18,4) NOT NULL,
-    SdiNuevo DECIMAL(18,4) NOT NULL,
+    "SalarioAnterior" DECIMAL(18,4) NOT NULL,
+    "SalarioNuevo" DECIMAL(18,4) NOT NULL,
+    "SdiAnterior" DECIMAL(18,4) NOT NULL,
+    "SdiNuevo" DECIMAL(18,4) NOT NULL,
 
-    MotivoCambio NVARCHAR(200) NULL,
-    Observaciones NVARCHAR(1000) NULL,
+    "MotivoCambio" VARCHAR(200) NULL,
+    "Observaciones" VARCHAR(1000) NULL,
 
-    UsuarioId UNIQUEIDENTIFIER NOT NULL,
-    DireccionIp NVARCHAR(50) NULL,
+    "UsuarioId" UUID NOT NULL,
+    "DireccionIp" VARCHAR(50) NULL,
 
-    FOREIGN KEY (EmpleadoId) REFERENCES rh.Empleados(Id)
+    FOREIGN KEY ("EmpleadoId") REFERENCES rh."Empleados"("Id")
 );
-GO
 
-CREATE INDEX IX_HistorialCambiosSalario_EmpleadoId ON aud.HistorialCambiosSalario(EmpleadoId);
-CREATE INDEX IX_HistorialCambiosSalario_FechaCambio ON aud.HistorialCambiosSalario(FechaCambio);
-GO
+CREATE INDEX "IX_HistorialCambiosSalario_EmpleadoId" ON aud."HistorialCambiosSalario"("EmpleadoId");
+CREATE INDEX "IX_HistorialCambiosSalario_FechaCambio" ON aud."HistorialCambiosSalario"("FechaCambio");
 
 -- ===================================
 -- TABLA: HistorialMovimientosEmpleado
 -- ===================================
-CREATE TABLE aud.HistorialMovimientosEmpleado (
-    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    EmpleadoId UNIQUEIDENTIFIER NOT NULL,
+CREATE TABLE aud."HistorialMovimientosEmpleado" (
+    "Id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    "EmpleadoId" UUID NOT NULL,
 
-    FechaMovimiento DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
-    FechaEfectiva DATE NOT NULL,
-    TipoMovimiento NVARCHAR(50) NOT NULL, -- Alta, Baja, Reingreso, CambioPuesto, CambioDepartamento, etc.
+    "FechaMovimiento" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    "FechaEfectiva" DATE NOT NULL,
+    "TipoMovimiento" VARCHAR(50) NOT NULL,
 
-    -- Valores anteriores
-    DepartamentoAnteriorId UNIQUEIDENTIFIER NULL,
-    PuestoAnteriorId UNIQUEIDENTIFIER NULL,
-    TurnoAnteriorId UNIQUEIDENTIFIER NULL,
+    "DepartamentoAnteriorId" UUID NULL,
+    "PuestoAnteriorId" UUID NULL,
+    "TurnoAnteriorId" UUID NULL,
 
-    -- Valores nuevos
-    DepartamentoNuevoId UNIQUEIDENTIFIER NULL,
-    PuestoNuevoId UNIQUEIDENTIFIER NULL,
-    TurnoNuevoId UNIQUEIDENTIFIER NULL,
+    "DepartamentoNuevoId" UUID NULL,
+    "PuestoNuevoId" UUID NULL,
+    "TurnoNuevoId" UUID NULL,
 
-    Motivo NVARCHAR(200) NULL,
-    Observaciones NVARCHAR(1000) NULL,
-    DocumentoSoporte NVARCHAR(500) NULL,
+    "Motivo" VARCHAR(200) NULL,
+    "Observaciones" VARCHAR(1000) NULL,
+    "DocumentoSoporte" VARCHAR(500) NULL,
 
-    UsuarioId UNIQUEIDENTIFIER NOT NULL,
-    DireccionIp NVARCHAR(50) NULL,
+    "UsuarioId" UUID NOT NULL,
+    "DireccionIp" VARCHAR(50) NULL,
 
-    FOREIGN KEY (EmpleadoId) REFERENCES rh.Empleados(Id)
+    FOREIGN KEY ("EmpleadoId") REFERENCES rh."Empleados"("Id")
 );
-GO
 
-CREATE INDEX IX_HistorialMovimientosEmpleado_EmpleadoId ON aud.HistorialMovimientosEmpleado(EmpleadoId);
-CREATE INDEX IX_HistorialMovimientosEmpleado_FechaMovimiento ON aud.HistorialMovimientosEmpleado(FechaMovimiento);
-CREATE INDEX IX_HistorialMovimientosEmpleado_TipoMovimiento ON aud.HistorialMovimientosEmpleado(TipoMovimiento);
-GO
+CREATE INDEX "IX_HistorialMovimientosEmpleado_EmpleadoId" ON aud."HistorialMovimientosEmpleado"("EmpleadoId");
+CREATE INDEX "IX_HistorialMovimientosEmpleado_FechaMovimiento" ON aud."HistorialMovimientosEmpleado"("FechaMovimiento");
+CREATE INDEX "IX_HistorialMovimientosEmpleado_TipoMovimiento" ON aud."HistorialMovimientosEmpleado"("TipoMovimiento");
 
 -- ===================================
 -- TABLA: HistorialCierresNomina
 -- ===================================
-CREATE TABLE aud.HistorialCierresNomina (
-    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    PeriodoNominaId UNIQUEIDENTIFIER NOT NULL,
+CREATE TABLE aud."HistorialCierresNomina" (
+    "Id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    "PeriodoNominaId" UUID NOT NULL,
 
-    FechaCierre DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
+    "FechaCierre" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 
-    TotalPercepciones DECIMAL(18,2) NOT NULL,
-    TotalDeducciones DECIMAL(18,2) NOT NULL,
-    TotalNeto DECIMAL(18,2) NOT NULL,
-    EmpleadosProcesados INT NOT NULL,
+    "TotalPercepciones" DECIMAL(18,2) NOT NULL,
+    "TotalDeducciones" DECIMAL(18,2) NOT NULL,
+    "TotalNeto" DECIMAL(18,2) NOT NULL,
+    "EmpleadosProcesados" INT NOT NULL,
 
-    HashIntegridad NVARCHAR(500) NOT NULL,
-    ResumenJson NVARCHAR(MAX) NULL, -- JSON con resumen detallado
+    "HashIntegridad" VARCHAR(500) NOT NULL,
+    "ResumenJson" TEXT NULL,
 
-    UsuarioCierreId UNIQUEIDENTIFIER NOT NULL,
-    DireccionIp NVARCHAR(50) NULL,
-    AgenteUsuario NVARCHAR(500) NULL,
+    "UsuarioCierreId" UUID NOT NULL,
+    "DireccionIp" VARCHAR(50) NULL,
+    "AgenteUsuario" VARCHAR(500) NULL,
 
-    FOREIGN KEY (PeriodoNominaId) REFERENCES nom.PeriodosNomina(Id)
+    FOREIGN KEY ("PeriodoNominaId") REFERENCES nom."PeriodosNomina"("Id")
 );
-GO
 
-CREATE INDEX IX_HistorialCierresNomina_PeriodoNominaId ON aud.HistorialCierresNomina(PeriodoNominaId);
-CREATE INDEX IX_HistorialCierresNomina_FechaCierre ON aud.HistorialCierresNomina(FechaCierre);
-GO
+CREATE INDEX "IX_HistorialCierresNomina_PeriodoNominaId" ON aud."HistorialCierresNomina"("PeriodoNominaId");
+CREATE INDEX "IX_HistorialCierresNomina_FechaCierre" ON aud."HistorialCierresNomina"("FechaCierre");
 
 -- ===================================
 -- VISTA: vw_AuditoriaCompleta
 -- ===================================
-CREATE VIEW aud.vw_AuditoriaCompleta AS
+CREATE OR REPLACE VIEW aud."vw_AuditoriaCompleta" AS
 SELECT
-    ra.Id,
-    ra.FechaHora,
-    ra.TipoAccion,
-    ra.NombreEntidad,
-    ra.EntidadId,
-    u.NombreUsuario,
-    u.Nombres + ' ' + u.ApellidoPaterno AS NombreCompletoUsuario,
-    e.NombreComercial AS Empresa,
-    i.Nombre AS Ingenio,
-    ra.DireccionIp,
-    ra.ValoresAnteriores,
-    ra.ValoresNuevos
-FROM aud.RegistrosAuditoria ra
-LEFT JOIN seg.Usuarios u ON ra.UsuarioId = u.Id
-LEFT JOIN corp.Empresas e ON ra.EmpresaId = e.Id
-LEFT JOIN corp.Ingenios i ON ra.IngenioId = i.Id;
-GO
+    ra."Id",
+    ra."FechaHora",
+    ra."TipoAccion",
+    ra."NombreEntidad",
+    ra."EntidadId",
+    u."NombreUsuario",
+    u."Nombres" || ' ' || u."ApellidoPaterno" AS "NombreCompletoUsuario",
+    e."NombreComercial" AS "Empresa",
+    i."Nombre" AS "Ingenio",
+    ra."DireccionIp",
+    ra."ValoresAnteriores",
+    ra."ValoresNuevos"
+FROM aud."RegistrosAuditoria" ra
+LEFT JOIN seg."Usuarios" u ON ra."UsuarioId" = u."Id"
+LEFT JOIN corp."Empresas" e ON ra."EmpresaId" = e."Id"
+LEFT JOIN corp."Ingenios" i ON ra."IngenioId" = i."Id";
 
-PRINT 'Tablas de Auditoría creadas correctamente';
-GO
+DO $$ BEGIN RAISE NOTICE 'Tablas de Auditoría creadas correctamente'; END $$;

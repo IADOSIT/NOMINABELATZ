@@ -137,7 +137,7 @@ public class IngenioConfiguracion : IEntityTypeConfiguration<Ingenio>
         // Índices
         builder.HasIndex(i => new { i.EmpresaId, i.Clave })
             .IsUnique()
-            .HasFilter("[Activo] = 1");
+            .HasFilter("\"Activo\" = TRUE");
         builder.HasIndex(i => i.RegistroPatronalImss);
         builder.HasIndex(i => i.Activo);
     }
@@ -258,7 +258,7 @@ public class EmpleadoConfiguracion : IEntityTypeConfiguration<Empleado>
         // Índices
         builder.HasIndex(e => new { e.EmpresaId, e.IngenioId, e.NumeroEmpleado })
             .IsUnique()
-            .HasFilter("[Activo] = 1");
+            .HasFilter("\"Activo\" = TRUE");
         builder.HasIndex(e => e.DepartamentoId);
         builder.HasIndex(e => e.PuestoId);
         builder.HasIndex(e => e.EstatusLaboral);
@@ -285,7 +285,7 @@ public class PeriodoNominaConfiguracion : IEntityTypeConfiguration<PeriodoNomina
         // Índices
         builder.HasIndex(p => new { p.EmpresaId, p.IngenioId, p.Ejercicio, p.NumeroPeriodo, p.TipoNomina })
             .IsUnique()
-            .HasFilter("[Activo] = 1");
+            .HasFilter("\"Activo\" = TRUE");
         builder.HasIndex(p => p.Estatus);
         builder.HasIndex(p => p.FechaPago);
     }
