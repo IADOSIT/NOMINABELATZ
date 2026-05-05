@@ -151,12 +151,16 @@ export const temaImperha = createTheme(
         defaultProps: { elevation: 0 },
         styleOverrides: {
           root: {
-            borderRadius: 12,
+            borderRadius: 16,
             border: `1px solid ${paleta.neutros.bordeClaro}`,
-            backgroundColor: paleta.neutros.blanco,
-            transition: 'box-shadow 0.2s ease, transform 0.2s ease',
+            background: 'rgba(255,255,255,0.82)',
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
+            transition: 'box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s',
             '&:hover': {
-              boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+              boxShadow: '0 8px 32px rgba(37,99,235,0.09), 0 2px 8px rgba(0,0,0,0.04)',
+              borderColor: 'rgba(37,99,235,0.2)',
+              transform: 'translateY(-1px)',
             },
           },
         },
@@ -165,23 +169,26 @@ export const temaImperha = createTheme(
         defaultProps: { elevation: 0 },
         styleOverrides: {
           root: { backgroundImage: 'none' },
-          rounded: { borderRadius: 12 },
+          rounded: { borderRadius: 16 },
           outlined: { borderColor: paleta.neutros.bordeClaro },
         },
       },
       MuiAppBar: {
         styleOverrides: {
           root: {
-            backgroundColor: paleta.neutros.blanco,
+            backgroundColor: 'rgba(248,250,252,0.85)',
+            backdropFilter: 'blur(24px)',
+            WebkitBackdropFilter: 'blur(24px)',
             color: paleta.neutros.textoOscuro,
-            boxShadow: `0 1px 0 ${paleta.neutros.bordeClaro}`,
+            boxShadow: 'none',
+            borderBottom: `1px solid ${paleta.neutros.bordeClaro}`,
           },
         },
       },
       MuiDrawer: {
         styleOverrides: {
           paper: {
-            backgroundColor: paleta.neutros.blanco,
+            backgroundColor: 'transparent',
             borderRight: `1px solid ${paleta.neutros.bordeClaro}`,
             color: paleta.neutros.textoOscuro,
           },
@@ -190,30 +197,26 @@ export const temaImperha = createTheme(
       MuiListItemButton: {
         styleOverrides: {
           root: {
-            borderRadius: 8,
+            borderRadius: 10,
             margin: '1px 8px',
             padding: '8px 12px',
             transition: 'all 0.15s ease',
             '&:hover': {
-              backgroundColor: paleta.neutros.fondoGris,
+              backgroundColor: alpha(paleta.azul.principal, 0.06),
               '& .MuiListItemIcon-root': { color: paleta.azul.principal },
             },
             '&.Mui-selected': {
-              backgroundColor: paleta.azul.palido,
+              background: `linear-gradient(135deg, ${alpha(paleta.azul.principal, 0.12)} 0%, ${alpha(paleta.indigo.principal, 0.08)} 100%)`,
+              backdropFilter: 'blur(8px)',
+              border: `1px solid ${alpha(paleta.azul.principal, 0.18)}`,
+              boxShadow: `0 2px 8px ${alpha(paleta.azul.principal, 0.1)}`,
               color: paleta.azul.principal,
               '& .MuiListItemIcon-root': { color: paleta.azul.principal },
-              '& .MuiListItemText-primary': { color: paleta.azul.principal, fontWeight: 600 },
-              '&:hover': { backgroundColor: alpha(paleta.azul.principal, 0.1) },
-              '&::before': {
-                content: '""',
-                position: 'absolute',
-                left: 0,
-                top: '20%',
-                height: '60%',
-                width: 3,
-                backgroundColor: paleta.azul.principal,
-                borderRadius: '0 3px 3px 0',
+              '& .MuiListItemText-primary': { color: paleta.azul.principal, fontWeight: 700 },
+              '&:hover': {
+                background: `linear-gradient(135deg, ${alpha(paleta.azul.principal, 0.16)} 0%, ${alpha(paleta.indigo.principal, 0.12)} 100%)`,
               },
+              '&::before': { display: 'none' },
             },
           },
         },

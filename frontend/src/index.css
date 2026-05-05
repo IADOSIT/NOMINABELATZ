@@ -1,11 +1,6 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-html,
-body {
+html, body {
   font-family: 'Inter', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -13,77 +8,100 @@ body {
   color: #0F172A;
 }
 
-#root {
-  min-height: 100vh;
-}
+#root { min-height: 100vh; }
 
 /* Scrollbar */
-::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb {
-  background: #CBD5E1;
-  border-radius: 999px;
-}
+::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 999px; }
 ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
 
-/* Animations */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
+/* ── Glassmorphism blob animations ── */
+@keyframes blobDrift1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25%       { transform: translate(40px, -60px) scale(1.07); }
+  50%       { transform: translate(80px, 20px) scale(0.95); }
+  75%       { transform: translate(-20px, 40px) scale(1.03); }
+}
+@keyframes blobDrift2 {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  33%       { transform: translate(-50px, 30px) scale(1.05) rotate(120deg); }
+  66%       { transform: translate(30px, -40px) scale(0.93) rotate(240deg); }
+}
+@keyframes blobDrift3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  40%       { transform: translate(20px, 50px) scale(1.08); }
+  80%       { transform: translate(-40px, -20px) scale(0.96); }
+}
+@keyframes blobDrift4 {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  50%       { transform: translate(60px, -30px) scale(1.1) rotate(180deg); }
 }
 
-@keyframes slideInRight {
-  from { transform: translateX(100%); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
+/* ── Subtle shimmer for glass cards ── */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ── Fade-in ── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 @keyframes pulse {
   0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.04); }
+  50%       { transform: scale(1.04); }
 }
 
-.fade-in { animation: fadeIn 0.25s ease-out; }
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+
+/* ── Glow pulse for logo ── */
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(37,99,235,0.3), 0 4px 16px rgba(37,99,235,0.2); }
+  50%       { box-shadow: 0 0 0 8px rgba(37,99,235,0), 0 4px 20px rgba(37,99,235,0.35); }
+}
+
+.fade-in-up   { animation: fadeInUp 0.35s cubic-bezier(0.34,1.56,0.64,1) both; }
+.fade-in      { animation: fadeIn 0.25s ease-out; }
 .slide-in-right { animation: slideInRight 0.3s ease-out; }
-.pulse { animation: pulse 2s ease-in-out infinite; }
+.pulse        { animation: pulse 2s ease-in-out infinite; }
 
 /* Print */
 @media print {
-  .no-print { display: none !important; }
+  .no-print   { display: none !important; }
   .print-only { display: block !important; }
-  body { background-color: white; }
+  body        { background-color: white; }
 }
 
-/* Payroll tables */
+/* Nómina tables */
 .nomina-table { font-size: 12px; }
 .nomina-table th {
-  background-color: #EFF6FF;
+  background: linear-gradient(135deg, #EFF6FF, #EEF2FF);
   color: #1E40AF;
   font-weight: 600;
   border-bottom: 2px solid #BFDBFE;
 }
-.nomina-table .total-row {
-  background-color: #EFF6FF;
-  font-weight: 600;
-}
+.nomina-table .total-row { background-color: #EFF6FF; font-weight: 600; }
 
-.currency {
-  font-family: 'Roboto Mono', monospace;
-  text-align: right;
-}
+.currency { font-family: 'Roboto Mono', monospace; text-align: right; }
 
-/* Zafra badge */
 .zafra-badge {
   background: linear-gradient(135deg, #F59E0B, #D97706);
-  color: white;
-  padding: 3px 10px;
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  color: white; padding: 3px 10px; border-radius: 999px;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.04em;
 }
 
-/* Status badges */
-.estado-activo { background-color: #ECFDF5; color: #065F46; border: 1px solid #A7F3D0; }
-.estado-baja { background-color: #FEF2F2; color: #991B1B; border: 1px solid #FECACA; }
-.estado-incapacidad { background-color: #FFFBEB; color: #92400E; border: 1px solid #FDE68A; }
-.estado-vacaciones { background-color: #EFF6FF; color: #1E40AF; border: 1px solid #BFDBFE; }
+.estado-activo     { background-color: #ECFDF5; color: #065F46; border: 1px solid #A7F3D0; border-radius: 6px; padding: 2px 8px; }
+.estado-baja       { background-color: #FEF2F2; color: #991B1B; border: 1px solid #FECACA; border-radius: 6px; padding: 2px 8px; }
+.estado-incapacidad{ background-color: #FFFBEB; color: #92400E; border: 1px solid #FDE68A; border-radius: 6px; padding: 2px 8px; }
+.estado-vacaciones { background-color: #EFF6FF; color: #1E40AF; border: 1px solid #BFDBFE; border-radius: 6px; padding: 2px 8px; }
