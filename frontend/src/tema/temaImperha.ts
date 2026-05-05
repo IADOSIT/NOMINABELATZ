@@ -437,4 +437,26 @@ export const temaImperha = createTheme(
   esES
 );
 
-export const coloresImperha = paleta;
+export const coloresImperha = {
+  ...paleta,
+  // Alias de compatibilidad con páginas existentes
+  guinda: {
+    principal: paleta.azul.principal,
+    oscuro: paleta.azul.oscuro,
+    claro: paleta.azul.claro,
+    suave: paleta.azul.suave,
+    palido: paleta.azul.palido,
+  },
+  rojo: {
+    principal: paleta.indigo.principal,
+    oscuro: '#3730A3',
+    claro: paleta.indigo.claro,
+    acento: '#818CF8',
+  },
+  estado: {
+    exito: paleta.exito,
+    advertencia: paleta.advertencia,
+    error: paleta.error,
+    info: paleta.info,
+  },
+};
