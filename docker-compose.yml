@@ -2,7 +2,25 @@ version: '3.8'
 
 services:
 
-  nominabelatz_web:
+  nominabelatz_api:
+    container_name: nominabelatz_api
+    build:
+      context: .
+      dockerfile: src/Presentacion/ImperhaNomninas.Api/Dockerfile
+    ports:
+      - "5010:5000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:5000
+      - ConnectionStrings__ImperhaDb=Host=postgres_local;Port=5432;Database=nominabelatz_db;Username=administrador;Password=U191tl1ebFN2RJR0fld5QhC8U29AhdOQ
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    networks:
+      - web_network
+    restart: unless-stopped
+
+  nominabelatz-frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
@@ -14,6 +32,8 @@ services:
       - VITE_API_URL=https://api.nominabelatz.com
     networks:
       - web_network
+    depends_on:
+      - nominabelatz_api
 
 networks:
   web_network:
