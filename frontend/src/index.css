@@ -1,8 +1,3 @@
-/* ===================================
-   IMPERHA NÓMINAS - Sistema Enterprise
-   Estilos globales
-   =================================== */
-
 * {
   margin: 0;
   padding: 0;
@@ -11,146 +6,84 @@
 
 html,
 body {
-  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Inter', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f5f5f5;
+  background-color: #F8FAFC;
+  color: #0F172A;
 }
 
 #root {
   min-height: 100vh;
 }
 
-/* Scrollbar personalizado */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 4px;
-}
-
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
-  border-radius: 4px;
+  background: #CBD5E1;
+  border-radius: 999px;
 }
+::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #a1a1a1;
-}
-
-/* Animaciones */
+/* Animations */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes slideInRight {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
 }
 
 @keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-  100% {
-    transform: scale(1);
-  }
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
 }
 
-/* Utilidades */
-.fade-in {
-  animation: fadeIn 0.3s ease-in-out;
-}
+.fade-in { animation: fadeIn 0.25s ease-out; }
+.slide-in-right { animation: slideInRight 0.3s ease-out; }
+.pulse { animation: pulse 2s ease-in-out infinite; }
 
-.slide-in-right {
-  animation: slideInRight 0.3s ease-out;
-}
-
-.pulse {
-  animation: pulse 2s infinite;
-}
-
-/* Estilos para impresión */
+/* Print */
 @media print {
-  .no-print {
-    display: none !important;
-  }
-
-  .print-only {
-    display: block !important;
-  }
-
-  body {
-    background-color: white;
-  }
+  .no-print { display: none !important; }
+  .print-only { display: block !important; }
+  body { background-color: white; }
 }
 
-/* Estilos para tablas de nómina */
-.nomina-table {
-  font-size: 12px;
-}
-
+/* Payroll tables */
+.nomina-table { font-size: 12px; }
 .nomina-table th {
-  background-color: #1976d2;
-  color: white;
+  background-color: #EFF6FF;
+  color: #1E40AF;
   font-weight: 600;
+  border-bottom: 2px solid #BFDBFE;
 }
-
 .nomina-table .total-row {
-  background-color: #e3f2fd;
+  background-color: #EFF6FF;
   font-weight: 600;
 }
 
-/* Formato de moneda */
 .currency {
   font-family: 'Roboto Mono', monospace;
   text-align: right;
 }
 
-/* Estado de zafra */
+/* Zafra badge */
 .zafra-badge {
-  background: linear-gradient(45deg, #ff9800, #f44336);
+  background: linear-gradient(135deg, #F59E0B, #D97706);
   color: white;
-  padding: 4px 12px;
-  border-radius: 16px;
-  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
   font-weight: 600;
+  letter-spacing: 0.04em;
 }
 
-/* Badges de estado */
-.estado-activo {
-  background-color: #4caf50;
-  color: white;
-}
-
-.estado-baja {
-  background-color: #f44336;
-  color: white;
-}
-
-.estado-incapacidad {
-  background-color: #ff9800;
-  color: white;
-}
-
-.estado-vacaciones {
-  background-color: #2196f3;
-  color: white;
-}
+/* Status badges */
+.estado-activo { background-color: #ECFDF5; color: #065F46; border: 1px solid #A7F3D0; }
+.estado-baja { background-color: #FEF2F2; color: #991B1B; border: 1px solid #FECACA; }
+.estado-incapacidad { background-color: #FFFBEB; color: #92400E; border: 1px solid #FDE68A; }
+.estado-vacaciones { background-color: #EFF6FF; color: #1E40AF; border: 1px solid #BFDBFE; }

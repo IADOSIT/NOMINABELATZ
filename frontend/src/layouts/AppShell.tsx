@@ -1,9 +1,3 @@
-// ===================================
-// IMPERHA NÓMINAS - Sistema Enterprise
-// Layout principal con menú completo
-// Industria Azucarera / Ley Federal del Trabajo
-// ===================================
-
 import { useState } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import {
@@ -90,26 +84,21 @@ import {
   Category as CategoryIcon,
   ListAlt as ListAltIcon,
   Summarize as SummarizeIcon,
+  KeyboardArrowDown as ArrowDownIcon,
 } from '@mui/icons-material';
 import { useAuthStore } from '../stores/authStore';
 import { useEmpresaStore } from '../stores/empresaStore';
 import { coloresImperha } from '../tema/temaImperha';
 import AsistenteIA from '../components/AsistenteIA/AsistenteIA';
 
-const anchoDrawer = 300;
-const anchoDrawerColapsado = 72;
+const DRAWER_WIDTH = 264;
+const DRAWER_COLLAPSED = 64;
 
-// Menú lateral completo enterprise
 const menuItems = [
   {
     seccion: 'Principal',
     items: [
-      {
-        titulo: 'Dashboard',
-        icono: <DashboardIcon />,
-        ruta: '/dashboard',
-        descripcion: 'Panel principal de control',
-      },
+      { titulo: 'Dashboard', icono: <DashboardIcon />, ruta: '/dashboard' },
     ],
   },
   {
@@ -127,7 +116,7 @@ const menuItems = [
         ],
       },
       {
-        titulo: 'Estructura Organizacional',
+        titulo: 'Estructura Org.',
         icono: <BusinessIcon />,
         subMenu: [
           { titulo: 'Departamentos', ruta: '/estructura/departamentos', icono: <BusinessIcon /> },
@@ -162,14 +151,14 @@ const menuItems = [
           { titulo: 'Pre-Nómina', ruta: '/nomina/pre-nomina', icono: <AssignmentIcon /> },
           { titulo: 'Dispersión Bancaria', ruta: '/nomina/dispersion', icono: <AtmIcon /> },
           { titulo: 'Recibos de Nómina', ruta: '/nomina/recibos', icono: <ReceiptLongIcon /> },
-          { titulo: 'Histórico de Nóminas', ruta: '/nomina/historico', icono: <HistoryIcon /> },
+          { titulo: 'Histórico', ruta: '/nomina/historico', icono: <HistoryIcon /> },
         ],
       },
       {
         titulo: 'Percepciones',
         icono: <TrendingUpIcon />,
         subMenu: [
-          { titulo: 'Catálogo de Percepciones', ruta: '/percepciones', icono: <ListAltIcon /> },
+          { titulo: 'Catálogo', ruta: '/percepciones', icono: <ListAltIcon /> },
           { titulo: 'Sueldo Base', ruta: '/percepciones/sueldo', icono: <MoneyIcon /> },
           { titulo: 'Bonos y Comisiones', ruta: '/percepciones/bonos', icono: <GiftIcon /> },
           { titulo: 'Prestaciones', ruta: '/percepciones/prestaciones', icono: <HealthIcon /> },
@@ -183,7 +172,7 @@ const menuItems = [
         titulo: 'Deducciones',
         icono: <WalletIcon />,
         subMenu: [
-          { titulo: 'Catálogo de Deducciones', ruta: '/deducciones', icono: <ListAltIcon /> },
+          { titulo: 'Catálogo', ruta: '/deducciones', icono: <ListAltIcon /> },
           { titulo: 'ISR', ruta: '/deducciones/isr', icono: <RequestQuoteIcon /> },
           { titulo: 'IMSS', ruta: '/deducciones/imss', icono: <MedicalIcon /> },
           { titulo: 'INFONAVIT', ruta: '/deducciones/infonavit', icono: <HomeIcon /> },
@@ -210,7 +199,7 @@ const menuItems = [
         ],
       },
       {
-        titulo: 'Contrato Ley Azucarero',
+        titulo: 'Contrato Ley',
         icono: <GavelIcon />,
         subMenu: [
           { titulo: 'Prestaciones de Ley', ruta: '/contrato-ley/prestaciones', icono: <HealthIcon /> },
@@ -228,7 +217,7 @@ const menuItems = [
           { titulo: 'Cuotas Sindicales', ruta: '/sindicato/cuotas', icono: <MoneyIcon /> },
           { titulo: 'Representantes', ruta: '/sindicato/representantes', icono: <PeopleIcon /> },
           { titulo: 'Acuerdos', ruta: '/sindicato/acuerdos', icono: <GavelIcon /> },
-          { titulo: 'Fondo de Ahorro Sindical', ruta: '/sindicato/fondo-ahorro', icono: <WalletIcon /> },
+          { titulo: 'Fondo de Ahorro', ruta: '/sindicato/fondo-ahorro', icono: <WalletIcon /> },
         ],
       },
     ],
@@ -273,7 +262,7 @@ const menuItems = [
     ],
   },
   {
-    seccion: 'Reportes y Análisis',
+    seccion: 'Reportes',
     items: [
       {
         titulo: 'Reportes',
@@ -286,7 +275,6 @@ const menuItems = [
           { titulo: 'Rotación de Personal', ruta: '/reportes/rotacion', icono: <SwapIcon /> },
           { titulo: 'Reportes IMSS', ruta: '/reportes/imss', icono: <MedicalIcon /> },
           { titulo: 'Reportes ISR', ruta: '/reportes/isr', icono: <RequestQuoteIcon /> },
-          { titulo: 'Reportes Personalizados', ruta: '/reportes/personalizados', icono: <TuneIcon /> },
         ],
       },
       {
@@ -302,22 +290,6 @@ const menuItems = [
     ],
   },
   {
-    seccion: 'Importaciones',
-    items: [
-      {
-        titulo: 'Carga de Datos',
-        icono: <UploadIcon />,
-        subMenu: [
-          { titulo: 'Importar Empleados', ruta: '/importar/empleados', icono: <PeopleIcon /> },
-          { titulo: 'Importar Asistencias', ruta: '/importar/asistencias', icono: <FingerprintIcon /> },
-          { titulo: 'Importar Incidencias', ruta: '/importar/incidencias', icono: <EventNoteIcon /> },
-          { titulo: 'Importar Movimientos', ruta: '/importar/movimientos', icono: <SwapIcon /> },
-          { titulo: 'Plantillas Excel', ruta: '/importar/plantillas', icono: <TableChartIcon /> },
-        ],
-      },
-    ],
-  },
-  {
     seccion: 'Administración',
     items: [
       {
@@ -328,17 +300,6 @@ const menuItems = [
           { titulo: 'Roles', ruta: '/seguridad/roles', icono: <AdminIcon /> },
           { titulo: 'Permisos', ruta: '/seguridad/permisos', icono: <VpnKeyIcon /> },
           { titulo: 'Sesiones Activas', ruta: '/seguridad/sesiones', icono: <ManageAccountsIcon /> },
-          { titulo: 'Políticas de Seguridad', ruta: '/seguridad/politicas', icono: <RuleIcon /> },
-        ],
-      },
-      {
-        titulo: 'Auditoría',
-        icono: <HistoryIcon />,
-        subMenu: [
-          { titulo: 'Bitácora de Accesos', ruta: '/auditoria/accesos', icono: <VpnKeyIcon /> },
-          { titulo: 'Cambios en Sistema', ruta: '/auditoria/cambios', icono: <SwapIcon /> },
-          { titulo: 'Historial de Nómina', ruta: '/auditoria/nomina', icono: <ReceiptIcon /> },
-          { titulo: 'Exportar Auditoría', ruta: '/auditoria/exportar', icono: <DownloadIcon /> },
         ],
       },
       {
@@ -350,8 +311,7 @@ const menuItems = [
           { titulo: 'Tablas ISR', ruta: '/configuracion/isr', icono: <TableChartIcon /> },
           { titulo: 'Tablas IMSS', ruta: '/configuracion/imss', icono: <MedicalIcon /> },
           { titulo: 'Catálogos SAT', ruta: '/configuracion/sat', icono: <CategoryIcon /> },
-          { titulo: 'Correo y Notificaciones', ruta: '/configuracion/notificaciones', icono: <NotificationsIcon /> },
-          { titulo: 'Respaldos', ruta: '/configuracion/respaldos', icono: <DownloadIcon /> },
+          { titulo: 'Notificaciones', ruta: '/configuracion/notificaciones', icono: <NotificationsIcon /> },
         ],
       },
     ],
@@ -369,16 +329,12 @@ function AppShell() {
   const [subMenusAbiertos, setSubMenusAbiertos] = useState<Record<string, boolean>>({});
   const [mostrarAsistente, setMostrarAsistente] = useState(false);
 
-  const toggleDrawer = () => setDrawerAbierto(!drawerAbierto);
-
-  const toggleSubMenu = (titulo: string) => {
+  const toggleDrawer = () => setDrawerAbierto((prev) => !prev);
+  const toggleSubMenu = (titulo: string) =>
     setSubMenusAbiertos((prev) => ({ ...prev, [titulo]: !prev[titulo] }));
-  };
 
-  const handleMenuUsuarioAbrir = (event: React.MouseEvent<HTMLElement>) => {
-    setMenuUsuarioAnchor(event.currentTarget);
-  };
-
+  const handleMenuUsuarioAbrir = (e: React.MouseEvent<HTMLElement>) =>
+    setMenuUsuarioAnchor(e.currentTarget);
   const handleMenuUsuarioCerrar = () => setMenuUsuarioAnchor(null);
 
   const handleCerrarSesion = () => {
@@ -392,119 +348,152 @@ function AppShell() {
     navigate('/seleccionar-empresa');
   };
 
-  const esRutaActiva = (ruta: string) => {
-    return location.pathname === ruta || location.pathname.startsWith(ruta + '/');
-  };
+  const esRutaActiva = (ruta: string) =>
+    location.pathname === ruta || location.pathname.startsWith(ruta + '/');
+
+  const AZUL = coloresImperha.azul.principal;
+  const AZUL_PALIDO = coloresImperha.azul.palido;
+  const BORDE = coloresImperha.neutros.bordeClaro;
+  const TEXTO_SEC = coloresImperha.neutros.textoSecundario;
 
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh' }}>
-      {/* AppBar Superior */}
+    <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: 'background.default' }}>
+      {/* AppBar */}
       <AppBar
         position="fixed"
         elevation={0}
         sx={{
-          width: `calc(100% - ${drawerAbierto ? anchoDrawer : anchoDrawerColapsado}px)`,
-          ml: `${drawerAbierto ? anchoDrawer : anchoDrawerColapsado}px`,
+          width: `calc(100% - ${drawerAbierto ? DRAWER_WIDTH : DRAWER_COLLAPSED}px)`,
+          ml: `${drawerAbierto ? DRAWER_WIDTH : DRAWER_COLLAPSED}px`,
           bgcolor: 'background.paper',
           color: 'text.primary',
-          borderBottom: `1px solid ${coloresImperha.neutros.bordeClaro}`,
-          transition: 'width 0.2s, margin-left 0.2s',
+          borderBottom: `1px solid ${BORDE}`,
+          transition: 'width 0.25s cubic-bezier(0.4,0,0.2,1), margin-left 0.25s cubic-bezier(0.4,0,0.2,1)',
         }}
       >
-        <Toolbar sx={{ minHeight: 64 }}>
-          <IconButton color="inherit" onClick={toggleDrawer} edge="start" sx={{ mr: 2 }}>
-            {drawerAbierto ? <ChevronLeftIcon /> : <MenuIcon />}
+        <Toolbar sx={{ minHeight: 60, gap: 1 }}>
+          <IconButton
+            onClick={toggleDrawer}
+            size="small"
+            sx={{
+              color: 'text.secondary',
+              border: `1px solid ${BORDE}`,
+              borderRadius: 2,
+              '&:hover': { bgcolor: AZUL_PALIDO, borderColor: AZUL, color: AZUL },
+            }}
+          >
+            {drawerAbierto ? <ChevronLeftIcon fontSize="small" /> : <MenuIcon fontSize="small" />}
           </IconButton>
 
-          {/* Selector de empresa/ingenio */}
+          {/* Selector empresa */}
           <Button
             onClick={handleCambiarEmpresa}
+            size="small"
             sx={{
+              ml: 1,
               textTransform: 'none',
               color: 'text.primary',
-              '&:hover': { bgcolor: alpha(coloresImperha.guinda.principal, 0.04) },
+              border: `1px solid ${BORDE}`,
+              borderRadius: 2,
+              px: 1.5,
+              py: 0.75,
+              gap: 1,
+              '&:hover': { bgcolor: AZUL_PALIDO, borderColor: AZUL },
             }}
-            startIcon={
-              <Avatar
-                sx={{
-                  width: 32,
-                  height: 32,
-                  bgcolor: coloresImperha.guinda.principal,
-                  fontSize: '0.875rem',
-                }}
-              >
-                <FactoryIcon fontSize="small" />
-              </Avatar>
-            }
           >
+            <Avatar
+              sx={{ width: 26, height: 26, bgcolor: AZUL_PALIDO, color: AZUL }}
+            >
+              <FactoryIcon sx={{ fontSize: 14 }} />
+            </Avatar>
             <Box sx={{ textAlign: 'left' }}>
-              <Typography variant="body2" fontWeight={600} sx={{ lineHeight: 1.2 }}>
+              <Typography variant="body2" fontWeight={600} sx={{ lineHeight: 1.2, fontSize: '0.8125rem' }}>
                 {empresaSeleccionada?.nombreComercial || 'Seleccionar Empresa'}
               </Typography>
               {ingenioSeleccionado && (
-                <Typography variant="caption" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                <Typography variant="caption" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', gap: 0.5, lineHeight: 1 }}>
                   {ingenioSeleccionado.nombre}
                   {ingenioSeleccionado.enZafra && (
-                    <Chip label="ZAFRA" size="small" color="success" sx={{ height: 16, fontSize: '0.625rem' }} />
+                    <Chip label="ZAFRA" size="small" color="success" sx={{ height: 14, fontSize: '0.5625rem', ml: 0.5 }} />
                   )}
                 </Typography>
               )}
             </Box>
+            <ArrowDownIcon sx={{ fontSize: 16, color: 'text.secondary', ml: 0.5 }} />
           </Button>
 
           <Box sx={{ flexGrow: 1 }} />
 
-          {/* Notificaciones */}
           <Tooltip title="Notificaciones">
-            <IconButton sx={{ mr: 1 }}>
+            <IconButton
+              size="small"
+              sx={{
+                color: 'text.secondary',
+                border: `1px solid ${BORDE}`,
+                borderRadius: 2,
+                '&:hover': { bgcolor: AZUL_PALIDO, borderColor: AZUL, color: AZUL },
+              }}
+            >
               <Badge badgeContent={5} color="error">
-                <NotificationsIcon />
+                <NotificationsIcon fontSize="small" />
               </Badge>
             </IconButton>
           </Tooltip>
 
-          {/* Asistente IA */}
           <Tooltip title="Asistente IA">
             <IconButton
+              size="small"
               onClick={() => setMostrarAsistente(!mostrarAsistente)}
               sx={{
-                mr: 2,
-                bgcolor: mostrarAsistente ? alpha(coloresImperha.guinda.principal, 0.1) : 'transparent',
-                color: coloresImperha.guinda.principal,
+                color: mostrarAsistente ? AZUL : 'text.secondary',
+                border: `1px solid ${mostrarAsistente ? AZUL : BORDE}`,
+                borderRadius: 2,
+                bgcolor: mostrarAsistente ? AZUL_PALIDO : 'transparent',
+                '&:hover': { bgcolor: AZUL_PALIDO, borderColor: AZUL, color: AZUL },
               }}
             >
-              <SmartToyIcon />
+              <SmartToyIcon fontSize="small" />
             </IconButton>
           </Tooltip>
 
-          {/* Usuario */}
-          <Chip
-            avatar={
-              <Avatar sx={{ bgcolor: coloresImperha.guinda.principal }}>
-                {usuario?.nombreCompleto?.charAt(0) || 'U'}
-              </Avatar>
-            }
-            label={
-              <Box sx={{ textAlign: 'left' }}>
-                <Typography variant="body2" fontWeight={500}>
-                  {usuario?.nombreCompleto || 'Usuario'}
-                </Typography>
-                <Typography variant="caption" color="text.secondary">
-                  {usuario?.rol || 'Administrador'}
-                </Typography>
-              </Box>
-            }
+          <Box
             onClick={handleMenuUsuarioAbrir}
             sx={{
-              height: 'auto',
-              py: 0.5,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1,
               cursor: 'pointer',
-              '& .MuiChip-label': { px: 1 },
+              px: 1.5,
+              py: 0.75,
+              borderRadius: 2,
+              border: `1px solid ${BORDE}`,
+              ml: 0.5,
+              '&:hover': { bgcolor: AZUL_PALIDO, borderColor: AZUL },
             }}
-          />
+          >
+            <Avatar sx={{ width: 28, height: 28, bgcolor: AZUL_PALIDO, color: AZUL, fontSize: '0.8rem', fontWeight: 700 }}>
+              {usuario?.nombreCompleto?.charAt(0) || 'U'}
+            </Avatar>
+            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+              <Typography variant="body2" fontWeight={600} sx={{ lineHeight: 1.2, fontSize: '0.8125rem' }}>
+                {usuario?.nombreCompleto || 'Usuario'}
+              </Typography>
+              <Typography variant="caption" color="text.secondary" sx={{ lineHeight: 1 }}>
+                {usuario?.rol || 'Administrador'}
+              </Typography>
+            </Box>
+            <ArrowDownIcon sx={{ fontSize: 14, color: 'text.secondary' }} />
+          </Box>
 
-          <Menu anchorEl={menuUsuarioAnchor} open={Boolean(menuUsuarioAnchor)} onClose={handleMenuUsuarioCerrar}>
-            <MenuItem onClick={() => { handleMenuUsuarioCerrar(); navigate('/perfil'); }}>
+          <Menu anchorEl={menuUsuarioAnchor} open={Boolean(menuUsuarioAnchor)} onClose={handleMenuUsuarioCerrar}
+            transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+          >
+            <Box sx={{ px: 2, py: 1.5, borderBottom: `1px solid ${BORDE}` }}>
+              <Typography variant="body2" fontWeight={600}>{usuario?.nombreCompleto || 'Usuario'}</Typography>
+              <Typography variant="caption" color="text.secondary">{usuario?.email || ''}</Typography>
+            </Box>
+            <MenuItem onClick={() => { handleMenuUsuarioCerrar(); navigate('/perfil'); }} sx={{ mt: 0.5 }}>
               <ListItemIcon><PersonIcon fontSize="small" /></ListItemIcon>
               Mi Perfil
             </MenuItem>
@@ -512,8 +501,8 @@ function AppShell() {
               <ListItemIcon><SettingsIcon fontSize="small" /></ListItemIcon>
               Configuración
             </MenuItem>
-            <Divider />
-            <MenuItem onClick={handleCerrarSesion} sx={{ color: 'error.main' }}>
+            <Divider sx={{ my: 0.5 }} />
+            <MenuItem onClick={handleCerrarSesion} sx={{ color: 'error.main', mb: 0.5 }}>
               <ListItemIcon><LogoutIcon fontSize="small" color="error" /></ListItemIcon>
               Cerrar Sesión
             </MenuItem>
@@ -521,136 +510,145 @@ function AppShell() {
         </Toolbar>
       </AppBar>
 
-      {/* Drawer Lateral */}
+      {/* Sidebar */}
       <Drawer
         variant="permanent"
         sx={{
-          width: drawerAbierto ? anchoDrawer : anchoDrawerColapsado,
+          width: drawerAbierto ? DRAWER_WIDTH : DRAWER_COLLAPSED,
           flexShrink: 0,
           '& .MuiDrawer-paper': {
-            width: drawerAbierto ? anchoDrawer : anchoDrawerColapsado,
+            width: drawerAbierto ? DRAWER_WIDTH : DRAWER_COLLAPSED,
             boxSizing: 'border-box',
-            transition: 'width 0.2s',
+            transition: 'width 0.25s cubic-bezier(0.4,0,0.2,1)',
             overflowX: 'hidden',
-            bgcolor: coloresImperha.guinda.oscuro,
-            color: '#fff',
-            borderRight: 'none',
+            bgcolor: 'background.paper',
+            borderRight: `1px solid ${BORDE}`,
           },
         }}
       >
         {/* Logo */}
         <Box
           sx={{
-            height: 64,
+            height: 60,
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
-            background: `linear-gradient(135deg, ${coloresImperha.guinda.principal} 0%, ${coloresImperha.rojo.principal} 100%)`,
+            px: drawerAbierto ? 2 : 0,
+            justifyContent: drawerAbierto ? 'flex-start' : 'center',
+            borderBottom: `1px solid ${BORDE}`,
+            flexShrink: 0,
           }}
         >
           {drawerAbierto ? (
-            <Box sx={{ textAlign: 'center' }}>
-              <Typography variant="h5" fontWeight={800} sx={{ letterSpacing: 2 }}>
-                IMPERHA
-              </Typography>
-              <Typography variant="caption" sx={{ opacity: 0.8, letterSpacing: 4 }}>
-                NÓMINAS
-              </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, overflow: 'hidden' }}>
+              <Box
+                component="img"
+                src="/belatz-logo.jpg"
+                alt="Belatz"
+                sx={{ height: 36, width: 36, borderRadius: 1.5, objectFit: 'cover', flexShrink: 0 }}
+                onError={(e: any) => { e.currentTarget.style.display = 'none'; }}
+              />
+              <Box sx={{ overflow: 'hidden' }}>
+                <Typography variant="subtitle2" fontWeight={700} noWrap sx={{ color: 'text.primary', lineHeight: 1.2 }}>
+                  Nóminas Belatz
+                </Typography>
+                <Typography variant="caption" noWrap sx={{ color: 'text.secondary', fontSize: '0.65rem' }}>
+                  Sistema Enterprise
+                </Typography>
+              </Box>
             </Box>
           ) : (
-            <Typography variant="h5" fontWeight={800}>
-              IN
-            </Typography>
+            <Box
+              component="img"
+              src="/belatz-logo.jpg"
+              alt="B"
+              sx={{ height: 32, width: 32, borderRadius: 1.5, objectFit: 'cover' }}
+              onError={(e: any) => {
+                e.currentTarget.style.display = 'none';
+                e.currentTarget.parentElement!.innerHTML = `<span style="font-weight:800;font-size:1.1rem;color:${AZUL}">NB</span>`;
+              }}
+            />
           )}
         </Box>
 
-        {/* Menú */}
+        {/* Menu list */}
         <Box sx={{ overflowY: 'auto', overflowX: 'hidden', flex: 1, py: 1 }}>
           {menuItems.map((seccion, idx) => (
-            <Box key={idx}>
+            <Box key={idx} sx={{ mb: 0.5 }}>
               {drawerAbierto && (
                 <Typography
                   variant="overline"
                   sx={{
-                    px: 3,
-                    py: 1.5,
+                    px: 2.5,
+                    pt: idx === 0 ? 1 : 1.5,
+                    pb: 0.5,
                     display: 'block',
-                    color: alpha('#fff', 0.5),
+                    color: coloresImperha.neutros.textoTerciario,
                     fontWeight: 600,
-                    fontSize: '0.65rem',
-                    letterSpacing: 1.5,
+                    fontSize: '0.625rem',
+                    letterSpacing: '0.1em',
                   }}
                 >
                   {seccion.seccion}
                 </Typography>
               )}
+              {!drawerAbierto && idx > 0 && <Divider sx={{ my: 0.75, mx: 1.5 }} />}
 
-              <List component="nav" disablePadding>
+              <List component="nav" disablePadding dense>
                 {seccion.items.map((item) => {
                   if (item.subMenu) {
-                    const subMenuAbierto = subMenusAbiertos[item.titulo];
-                    const tieneRutaActiva = item.subMenu.some((sub) => esRutaActiva(sub.ruta));
+                    const abiert = subMenusAbiertos[item.titulo];
+                    const tieneActiva = item.subMenu.some((s) => esRutaActiva(s.ruta));
 
                     return (
                       <Box key={item.titulo}>
-                        <ListItem disablePadding>
-                          <ListItemButton
-                            onClick={() => toggleSubMenu(item.titulo)}
-                            sx={{
-                              minHeight: 44,
-                              px: 2.5,
-                              mx: 1,
-                              borderRadius: 2,
-                              bgcolor: tieneRutaActiva ? alpha('#fff', 0.1) : 'transparent',
-                              '&:hover': { bgcolor: alpha('#fff', 0.08) },
-                            }}
-                          >
-                            <ListItemIcon sx={{ minWidth: 36, color: tieneRutaActiva ? '#fff' : alpha('#fff', 0.7) }}>
-                              {item.icono}
-                            </ListItemIcon>
-                            {drawerAbierto && (
-                              <>
-                                <ListItemText
-                                  primary={item.titulo}
-                                  primaryTypographyProps={{
-                                    fontSize: '0.875rem',
-                                    fontWeight: tieneRutaActiva ? 600 : 400,
-                                  }}
-                                />
-                                {subMenuAbierto ? <ExpandLess /> : <ExpandMore />}
-                              </>
-                            )}
-                          </ListItemButton>
-                        </ListItem>
+                        <Tooltip title={drawerAbierto ? '' : item.titulo} placement="right">
+                          <ListItem disablePadding>
+                            <ListItemButton
+                              onClick={() => toggleSubMenu(item.titulo)}
+                              selected={tieneActiva && !abiert}
+                              sx={{ minHeight: 40, mx: 1, borderRadius: 2 }}
+                            >
+                              <ListItemIcon sx={{ minWidth: drawerAbierto ? 36 : 'auto' }}>
+                                {item.icono}
+                              </ListItemIcon>
+                              {drawerAbierto && (
+                                <>
+                                  <ListItemText
+                                    primary={item.titulo}
+                                    primaryTypographyProps={{ fontSize: '0.8125rem', fontWeight: tieneActiva ? 600 : 400 }}
+                                  />
+                                  {abiert ? (
+                                    <ExpandLess sx={{ fontSize: 16, color: TEXTO_SEC }} />
+                                  ) : (
+                                    <ExpandMore sx={{ fontSize: 16, color: TEXTO_SEC }} />
+                                  )}
+                                </>
+                              )}
+                            </ListItemButton>
+                          </ListItem>
+                        </Tooltip>
 
                         {drawerAbierto && (
-                          <Collapse in={subMenuAbierto} timeout="auto" unmountOnExit>
-                            <List component="div" disablePadding>
+                          <Collapse in={abiert} timeout="auto" unmountOnExit>
+                            <List component="div" disablePadding dense>
                               {item.subMenu.map((subItem) => (
                                 <ListItemButton
                                   key={subItem.titulo}
                                   onClick={() => navigate(subItem.ruta)}
+                                  selected={esRutaActiva(subItem.ruta)}
                                   sx={{
-                                    pl: 5,
-                                    py: 0.75,
+                                    pl: 6,
+                                    pr: 1.5,
+                                    py: 0.625,
                                     mx: 1,
-                                    borderRadius: 1,
-                                    bgcolor: esRutaActiva(subItem.ruta) ? alpha('#fff', 0.15) : 'transparent',
-                                    borderLeft: esRutaActiva(subItem.ruta)
-                                      ? `3px solid ${coloresImperha.rojo.acento}`
-                                      : '3px solid transparent',
-                                    '&:hover': { bgcolor: alpha('#fff', 0.08) },
+                                    borderRadius: 2,
                                   }}
                                 >
-                                  <ListItemIcon sx={{ minWidth: 28, color: alpha('#fff', 0.6) }}>
-                                    {subItem.icono}
-                                  </ListItemIcon>
                                   <ListItemText
                                     primary={subItem.titulo}
                                     primaryTypographyProps={{
                                       fontSize: '0.8125rem',
                                       fontWeight: esRutaActiva(subItem.ruta) ? 600 : 400,
-                                      color: esRutaActiva(subItem.ruta) ? '#fff' : alpha('#fff', 0.85),
                                     }}
                                   />
                                 </ListItemButton>
@@ -663,86 +661,79 @@ function AppShell() {
                   }
 
                   return (
-                    <ListItem key={item.titulo} disablePadding>
-                      <ListItemButton
-                        onClick={() => navigate(item.ruta!)}
-                        sx={{
-                          minHeight: 44,
-                          px: 2.5,
-                          mx: 1,
-                          borderRadius: 2,
-                          bgcolor: esRutaActiva(item.ruta!) ? alpha('#fff', 0.15) : 'transparent',
-                          borderLeft: esRutaActiva(item.ruta!)
-                            ? `3px solid ${coloresImperha.rojo.acento}`
-                            : '3px solid transparent',
-                          '&:hover': { bgcolor: alpha('#fff', 0.08) },
-                        }}
-                      >
-                        <ListItemIcon
-                          sx={{
-                            minWidth: 36,
-                            color: esRutaActiva(item.ruta!) ? '#fff' : alpha('#fff', 0.7),
-                          }}
+                    <Tooltip key={item.titulo} title={drawerAbierto ? '' : item.titulo} placement="right">
+                      <ListItem disablePadding>
+                        <ListItemButton
+                          onClick={() => navigate(item.ruta!)}
+                          selected={esRutaActiva(item.ruta!)}
+                          sx={{ minHeight: 40, mx: 1, borderRadius: 2 }}
                         >
-                          {item.icono}
-                        </ListItemIcon>
-                        {drawerAbierto && (
-                          <ListItemText
-                            primary={item.titulo}
-                            primaryTypographyProps={{
-                              fontSize: '0.875rem',
-                              fontWeight: esRutaActiva(item.ruta!) ? 600 : 400,
-                            }}
-                          />
-                        )}
-                      </ListItemButton>
-                    </ListItem>
+                          <ListItemIcon sx={{ minWidth: drawerAbierto ? 36 : 'auto' }}>
+                            {item.icono}
+                          </ListItemIcon>
+                          {drawerAbierto && (
+                            <ListItemText
+                              primary={item.titulo}
+                              primaryTypographyProps={{ fontSize: '0.8125rem', fontWeight: esRutaActiva(item.ruta!) ? 600 : 400 }}
+                            />
+                          )}
+                        </ListItemButton>
+                      </ListItem>
+                    </Tooltip>
                   );
                 })}
               </List>
-
-              {idx < menuItems.length - 1 && (
-                <Divider sx={{ my: 1, borderColor: alpha('#fff', 0.1) }} />
-              )}
             </Box>
           ))}
         </Box>
 
-        {/* Footer del drawer */}
+        {/* Sidebar footer */}
         {drawerAbierto && (
           <Box
             sx={{
-              p: 2,
-              borderTop: `1px solid ${alpha('#fff', 0.1)}`,
-              bgcolor: alpha('#000', 0.2),
+              px: 2,
+              py: 1.5,
+              borderTop: `1px solid ${BORDE}`,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1,
+              flexShrink: 0,
             }}
           >
-            <Typography variant="caption" sx={{ color: alpha('#fff', 0.5), display: 'block' }}>
-              IMPERHA NÓMINAS v1.0.0
-            </Typography>
-            <Typography variant="caption" sx={{ color: alpha('#fff', 0.4), fontSize: '0.65rem' }}>
-              Contrato Ley Azucarero • LFT • SAT
-            </Typography>
+            <Box
+              sx={{
+                width: 8,
+                height: 8,
+                borderRadius: '50%',
+                bgcolor: coloresImperha.exito,
+                flexShrink: 0,
+              }}
+            />
+            <Box sx={{ overflow: 'hidden' }}>
+              <Typography variant="caption" noWrap sx={{ display: 'block', color: TEXTO_SEC, fontSize: '0.6875rem' }}>
+                v1.0.0 • CFDI 4.0 • LFT
+              </Typography>
+            </Box>
           </Box>
         )}
       </Drawer>
 
-      {/* Contenido Principal */}
+      {/* Main content */}
       <Box
         component="main"
         sx={{
           flexGrow: 1,
           p: 3,
-          width: `calc(100% - ${drawerAbierto ? anchoDrawer : anchoDrawerColapsado}px)`,
-          mt: '64px',
-          bgcolor: coloresImperha.neutros.fondoClaro,
-          minHeight: 'calc(100vh - 64px)',
+          mt: '60px',
+          bgcolor: 'background.default',
+          minHeight: 'calc(100vh - 60px)',
+          width: `calc(100% - ${drawerAbierto ? DRAWER_WIDTH : DRAWER_COLLAPSED}px)`,
+          transition: 'width 0.25s cubic-bezier(0.4,0,0.2,1)',
         }}
       >
         <Outlet />
       </Box>
 
-      {/* Asistente IA */}
       {mostrarAsistente && <AsistenteIA onCerrar={() => setMostrarAsistente(false)} />}
     </Box>
   );
